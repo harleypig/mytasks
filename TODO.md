@@ -2,14 +2,14 @@
 
 ## Documentation Organization
 
-- [ ] Create `docs/` directory
-- [ ] Break up `statement.md` into proto-documentation files:
-  - [ ] `docs/overview.md` - High-level problem statement and goals
-  - [ ] `docs/design-decisions.md` - Storage model, file format, and other decisions
-  - [ ] `docs/data-model.md` - Task structure, fields, and relationships
-  - [ ] `docs/architecture.md` - System architecture and component design
-  - [ ] `docs/cli-design.md` - Command-line interface specification
-  - [ ] `docs/implementation-notes.md` - Implementation language choice and rationale
+- [x] Create `docs/` directory
+- [x] Break up `statement.md` into proto-documentation files:
+  - [x] `docs/overview.md` - High-level problem statement and goals
+  - [x] `docs/design-decisions.md` - Storage model, file format, and other decisions
+  - [x] `docs/data-model.md` - Task structure, fields, and relationships
+  - [x] `docs/architecture.md` - System architecture and component design
+  - [x] `docs/cli-design.md` - Command-line interface specification
+  - [x] `docs/implementation-notes.md` - Implementation language choice and rationale
 
 ## Design Questions & Clarifications
 
