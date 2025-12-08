@@ -174,3 +174,15 @@ I want a **simple, file-based task manager** with:
 
 Databases solve some hard problems but introduce others I don't actually have. For my use case, **tasks as files** (Maildir/mbox-inspired) is the right mental model; I just need the tooling and format to make it practical.
 
+---
+
+## Documentation
+
+For more detailed information, see the following documents in reading order:
+
+1. [Design Decisions](design-decisions.md) - Storage model and file format decisions
+2. [Data Model](data-model.md) - Task structure, fields, and relationships
+3. [Architecture](architecture.md) - System architecture and deployment model
+4. [CLI Design](cli-design.md) - Command-line interface specification
+5. [Implementation Notes](implementation-notes.md) - Implementation language choice and technical details
+
