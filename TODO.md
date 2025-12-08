@@ -94,22 +94,6 @@
 
 ---
 
-### Migration Path
-
-**Question**: Do we need a migration tool from Taskwarrior?
-
-**Options**:
-- Yes, provide import/export tools
-- No, start fresh
-- Maybe later (not in MVP)
-
-**Considerations**:
-- Migration tools help adoption
-- Can be added later if not in MVP
-- Export format should be well-documented
-
----
-
 ### Locking Strategy
 
 **Question**: How should we handle concurrent edits on the same machine?
