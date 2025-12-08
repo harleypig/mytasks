@@ -132,6 +132,7 @@ The system will consist of:
 
 * **Data layer**: File-based storage using TOML format
 * **Core logic**: Task operations (create, read, update, delete, query)
+* **Recurrence engine**: Task generation and auto-completion for repeating tasks
 * **Hooks system**: Event-driven script execution for automation and integration
 * **CLI interface**: Command-line tool for user interaction
 * **Git integration**: Detection and interaction with git repositories
@@ -153,4 +154,19 @@ Hooks enable:
 * **Automation**: Post-operation actions (notifications, logging, etc.)
 * **Integration**: Connect with external systems and tools
 * **Customization**: Extend functionality without modifying core code
+
+### Recurrence Engine Architecture
+
+The recurrence engine handles automatic task generation and auto-completion:
+
+* **Task generation**: Creates new task instances based on recurrence patterns
+* **Auto-completion**: Handles incomplete recurring tasks according to configured rules
+* **Pattern support**: Implements three recurrence patterns (fixed, relative, sequential)
+* **Idempotency**: Ensures safe operation across multiple hosts/machines
+* **Scheduling**: Manages when to generate next tasks and when to auto-complete
+
+The engine integrates with:
+* **Core logic**: Triggers task creation and updates
+* **Hooks system**: Can trigger hooks when generating or auto-completing tasks
+* **CLI**: Provides commands for managing recurring tasks and checking auto-completion status
 

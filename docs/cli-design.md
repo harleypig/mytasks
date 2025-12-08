@@ -33,6 +33,11 @@ The exact command name is still under consideration (see Open Design Questions).
 * `task edit` - Edit an existing task
 * `task delete` - Delete a task
 * `task sync` - Sync with git remotes (if configured)
+* `task recur` - Create or manage recurring tasks
+* `task generate` - Manually trigger task generation for recurring tasks
+* `task auto-complete` - Manually trigger auto-completion check for recurring tasks
+
+Some of these tasks (generate?, auto-complete?) may be incorporated as automatically run every time the `task` command is executed.
 
 ### Global Options
 
