@@ -63,8 +63,17 @@ The exact command name is still under consideration (see Open Design Questions).
 
 The CLI should integrate well with:
 
+* **Task hooks**: Built-in hooks system for task operation automation (see [Design Decisions](design-decisions.md))
 * **Git hooks**: Pre-commit, post-commit hooks for automatic syncing
 * **Cron jobs**: Scheduled task processing
 * **Shell scripts**: Easy to call from automation
 * **TUI tools**: Output format suitable for terminal UI consumption
+
+### Hook Integration
+
+The CLI executes hooks automatically during task operations:
+* Pre-operation hooks can validate or modify task data before operations
+* Post-operation hooks can trigger notifications, logging, or other side effects
+* Hook execution is transparent to users but can be monitored via verbose/debug flags
+* Failed hooks can optionally abort operations or just log warnings
 

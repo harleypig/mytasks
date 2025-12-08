@@ -23,6 +23,26 @@ Each installation of the task manager should behave like a standalone project re
 
 In other words, a task repo should behave exactly like a code repo: fully functional on its own, with optional remotes for sync and collaboration, but no hard dependency on them.
 
+### Repository Structure
+
+A task repository has the following structure:
+
+```
+task-repo/
+├── tasks/              # Directory containing task files (TOML)
+│   ├── <task-id>.toml
+│   └── ...
+├── config.toml         # Repository configuration (hooks, settings)
+└── .git/               # Git repository (if using git for sync)
+```
+
+The `config.toml` file in the repository root contains:
+* Hook definitions (see [Design Decisions](design-decisions.md))
+* Repository-specific settings
+* Optional metadata
+
+This structure keeps configuration version-controlled alongside tasks, ensuring hooks and settings sync across machines.
+
 ---
 
 ## Interoperability Through Git
@@ -59,18 +79,35 @@ This means the task manager should:
 * Fit well into a dotfiles / infra-as-code environment.
 * Avoid hidden magic.
 * Play nicely with `git` hooks, cron jobs, etc.
+* Provide hooks system for automation and integration (separate from git hooks).
 
 ---
 
 ## Component Design
 
-(To be expanded as implementation progresses)
-
 The system will consist of:
 
 * **Data layer**: File-based storage using TOML format
 * **Core logic**: Task operations (create, read, update, delete, query)
+* **Hooks system**: Event-driven script execution for automation and integration
 * **CLI interface**: Command-line tool for user interaction
 * **Git integration**: Detection and interaction with git repositories
 * **Conflict handling**: Detection and resolution of merge conflicts
+* **Configuration management**: TOML-based configuration including hooks
+
+### Hooks System Architecture
+
+The hooks system is integrated into the core task operations:
+
+* **Hook discovery**: Loads hook configuration from TOML config file at repository initialization
+* **Hook execution**: Executes hooks at appropriate points in task operation lifecycle
+* **Hook context**: Provides task data, operation type, and environment to hook scripts
+* **Error handling**: Manages hook failures gracefully with configurable abort behavior
+* **Performance**: Hooks are designed to be fast and non-blocking where possible
+
+Hooks enable:
+* **Validation**: Pre-operation validation of task data
+* **Automation**: Post-operation actions (notifications, logging, etc.)
+* **Integration**: Connect with external systems and tools
+* **Customization**: Extend functionality without modifying core code
 
