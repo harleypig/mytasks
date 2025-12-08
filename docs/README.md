@@ -186,4 +186,5 @@ For more detailed information, see the following documents in reading order:
 4. [CLI Design](cli-design.md) - Command-line interface specification
 5. [Implementation Notes](implementation-notes.md) - Implementation language choice and technical details
 6. [Migration and Export](migration.md) - Migration tools and export formats
+7. [Development Milestones](milestones.md) - Project milestones and completion criteria
 

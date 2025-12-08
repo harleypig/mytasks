@@ -92,10 +92,33 @@ The task manager uses a **multi-tiered configuration system** that allows settin
 
 Configuration is resolved in the following order (highest priority first):
 
-1. **CLI options**: Command-line flags override all configuration files
-2. **Task-level configuration**: Individual tasks can override certain settings (if supported)
-3. **Data directory configuration**: Repository-specific settings in the data directory
-4. **Global configuration**: User-wide defaults following XDG conventions
+1. **CLI options**: Command-line flags override all configuration files and environment variables
+2. **Environment variables**: System environment variables override configuration files
+3. **Task-level configuration**: Individual tasks can override certain settings (if supported)
+4. **Data directory configuration**: Repository-specific settings in the data directory
+5. **Global configuration**: User-wide defaults following XDG conventions
+6. **Built-in defaults**: System defaults if no other configuration is found
+
+### Built-in Default Configuration
+
+When no configuration files, environment variables, or CLI options are provided, the system uses these built-in defaults:
+
+* **Data directory**: Current working directory (`.`)
+  * Rationale: Allows immediate use without setup; users can override via CLI or config
+* **Editor**: `$EDITOR` environment variable, or `vi` if `$EDITOR` is unset
+  * Rationale: Respects user's system editor preference; falls back to universal default
+* **Date format**: ISO 8601 (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS` for timestamps)
+  * Rationale: Standard, unambiguous, sortable format
+* **Time zone**: System timezone (as reported by OS)
+  * Rationale: Uses system default; can be overridden if needed
+* **Hooks**: None enabled by default
+  * Rationale: Minimal default; users enable hooks as needed
+* **Output format**: Plain text (human-readable)
+  * Rationale: Works well for both interactive use and shell piping
+* **Verbosity**: Normal (warnings and errors only)
+  * Rationale: Quiet by default; verbose mode available when needed
+
+These defaults ensure the system works out-of-the-box with minimal configuration while allowing full customization through configuration files, environment variables, or CLI options.
 
 ### Global Configuration
 
@@ -144,10 +167,37 @@ Individual tasks may be able to override certain configuration values:
 When resolving a configuration value:
 
 1. Check CLI options first
-2. Check task-level configuration (if applicable)
-3. Check data directory `config.toml`
-4. Check global `config.toml`
-5. Use built-in defaults
+2. Check environment variables
+3. Check task-level configuration (if applicable)
+4. Check data directory `config.toml`
+5. Check global `config.toml`
+6. Use built-in defaults
+
+### Environment Variables
+
+Environment variables provide a way to override configuration settings without modifying configuration files. This is useful for:
+
+* **Temporary overrides**: Testing different configurations
+* **Script automation**: Setting configuration in shell scripts
+* **CI/CD pipelines**: Configuring behavior in automated environments
+* **System-wide defaults**: Setting defaults at the system level
+
+**Naming convention**: Environment variables use the prefix `MYTASK_` followed by the configuration key in uppercase with underscores. For example:
+* `MYTASK_DATA_DIR` - Override default data directory
+* `MYTASK_EDITOR` - Override default editor
+* `MYTASK_DATE_FORMAT` - Override date format preference
+
+**Scope**: Environment variables override configuration files but are overridden by CLI options. This allows CLI options to always take precedence for maximum flexibility.
+
+**Examples**:
+```bash
+# Set data directory via environment variable
+export MYTASK_DATA_DIR=/path/to/tasks
+task list
+
+# Override with CLI option (takes precedence)
+task list --data-dir /other/path
+```
 
 ### Future Extensibility
 
@@ -155,7 +205,6 @@ The configuration system is designed to be extensible. Future additions could in
 
 * **Current directory configuration**: `.mytask/config.toml` in current working directory
 * **Parent directory search**: Walk up directory tree looking for config files
-* **Environment variables**: Override specific settings via environment variables
 * **Per-command configuration**: Command-specific config files
 
 ### Design Rationale

@@ -36,6 +36,7 @@ The exact command name is still under consideration (see Open Design Questions).
 * `task recur` - Create or manage recurring tasks
 * `task generate` - Manually trigger task generation for recurring tasks
 * `task auto-complete` - Manually trigger auto-completion check for recurring tasks
+* `task config dump` - Dump configuration (default or resolved)
 
 Some of these tasks (generate?, auto-complete?) may be incorporated as automatically run every time the `task` command is executed.
 
@@ -43,7 +44,7 @@ Some of these tasks (generate?, auto-complete?) may be incorporated as automatic
 
 All commands support global options:
 
-* `--data-dir <path>` or `-d <path>` - Specify the data directory (overrides configuration)
+* `--data-dir <path>` or `-d <path>` - Specify the data directory (overrides configuration and environment variables)
 * `--config <path>` - Specify path to global config file (overrides XDG default)
 * `--verbose` or `-v` - Increase verbosity
 * `--quiet` or `-q` - Reduce output
@@ -57,6 +58,31 @@ The `--data-dir` option is essential for working with multiple repositories:
 * **Flexible workflows**: Enables separation of personal/work/experimental repositories
 
 **Note**: The data directory IS the repository. There is no separate repository concept—each data directory is a complete, self-contained task repository that can operate independently and sync to its own remote(s).
+
+### Configuration Dump Command
+
+The `task config dump` command provides visibility into configuration:
+
+* `task config dump --default` - Show built-in default configuration values
+* `task config dump` (no flags) - Show resolved/working configuration (after all resolution steps)
+* Output format: TOML (matches configuration file format)
+* Useful for:
+  * Debugging configuration issues
+  * Understanding what configuration is actually in effect
+  * Creating initial configuration files from defaults
+  * Verifying configuration resolution order
+
+**Examples**:
+```bash
+# Show what configuration would be used (resolved)
+task config dump
+
+# Show built-in defaults only
+task config dump --default
+
+# Save resolved config to file
+task config dump > my-config.toml
+```
 
 ---
 
