@@ -13,9 +13,11 @@ This document describes how to contribute to the project. For development enviro
    * Review [AGENTS.md](../../AGENTS.md) for development guidelines
 
 2. Set up your development environment:
-   * Configure `local::lib` for Perl module management (see [DEVELOPMENT.md](DEVELOPMENT.md))
-   * Install required tools and dependencies
-   * See [DEVELOPMENT.md](DEVELOPMENT.md) for complete setup instructions
+   * Choose a Perl environment setup method:
+     * **Standard setup**: Uses `local::lib` for project-specific module isolation
+     * **Perlbrew setup**: Uses `perlbrew` for Perl version and module management
+   * Run `./scripts/bootstrap.sh` (automatically detects your setup)
+   * See [DEVELOPMENT.md](DEVELOPMENT.md) for complete setup instructions for both scenarios
 
 3. Identify what you want to work on:
    * Create an issue and discuss with the developers before starting work
