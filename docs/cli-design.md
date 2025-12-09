@@ -8,7 +8,7 @@ The CLI should provide:
 
 * **Reasonable CLI UX**:
 
-  * `task add`, `task list`, `task done`, etc. or similar verbs.
+  * `mytask add`, `mytask list`, `mytask done`, etc. or similar verbs.
   * Output suitable for TUI use or shell piping.
   * Easy to integrate into scripts and other tools.
 
@@ -26,19 +26,19 @@ The exact command name is still under consideration (see Open Design Questions).
 
 ### Proposed Commands
 
-* `task add` - Create a new task
-* `task list` - List tasks with optional filtering
-* `task show` - Display details of a specific task
-* `task done` - Mark a task as completed
-* `task edit` - Edit an existing task
-* `task delete` - Delete a task
-* `task sync` - Sync with git remotes (if configured)
-* `task recur` - Create or manage recurring tasks
-* `task generate` - Manually trigger task generation for recurring tasks
-* `task auto-complete` - Manually trigger auto-completion check for recurring tasks
-* `task config dump` - Dump configuration (default or resolved)
+* `mytask add` - Create a new task
+* `mytask list` - List tasks with optional filtering
+* `mytask show` - Display details of a specific task
+* `mytask done` - Mark a task as completed
+* `mytask edit` - Edit an existing task
+* `mytask delete` - Delete a task
+* `mytask sync` - Sync with git remotes (if configured)
+* `mytask recur` - Create or manage recurring tasks
+* `mytask generate` - Manually trigger task generation for recurring tasks
+* `mytask auto-complete` - Manually trigger auto-completion check for recurring tasks
+* `mytask config dump` - Dump configuration (default or resolved)
 
-Some of these tasks (generate?, auto-complete?) may be incorporated as automatically run every time the `task` command is executed.
+Some of these tasks (generate?, auto-complete?) may be incorporated as automatically run every time the `mytask` command is executed.
 
 ### Global Options
 
@@ -61,10 +61,10 @@ The `--data-dir` option is essential for working with multiple repositories:
 
 ### Configuration Dump Command
 
-The `task config dump` command provides visibility into configuration:
+The `mytask config dump` command provides visibility into configuration:
 
-* `task config dump --default` - Show built-in default configuration values
-* `task config dump` (no flags) - Show resolved/working configuration (after all resolution steps)
+* `mytask config dump --default` - Show built-in default configuration values
+* `mytask config dump` (no flags) - Show resolved/working configuration (after all resolution steps)
 * Output format: TOML (matches configuration file format)
 * Useful for:
   * Debugging configuration issues
@@ -75,13 +75,13 @@ The `task config dump` command provides visibility into configuration:
 **Examples**:
 ```bash
 # Show what configuration would be used (resolved)
-task config dump
+mytask config dump
 
 # Show built-in defaults only
-task config dump --default
+mytask config dump --default
 
 # Save resolved config to file
-task config dump > my-config.toml
+mytask config dump > my-config.toml
 ```
 
 ---
@@ -90,12 +90,7 @@ task config dump > my-config.toml
 
 ### CLI Command Name
 
-* What should the CLI command be called?
-
-  * `mytask` (matches project name)
-  * `task` (generic, might conflict with Taskwarrior)
-  * `tt` or `t` (short alias)
-  * Something else?
+The CLI command is **`mytask`** (matches the project name). Short aliases may be added in the future (e.g., `mt` or `t`), but `mytask` is the primary command name.
 
 ### Output Formats
 

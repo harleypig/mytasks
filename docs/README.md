@@ -115,7 +115,7 @@ I want to formalize this idea into a coherent tool and data model.
 
 5. **Reasonable CLI UX**
 
-   * `task add`, `task list`, `task done`, etc. or similar verbs.
+   * `mytask add`, `mytask list`, `mytask done`, etc. or similar verbs.
    * Output suitable for TUI use or shell piping.
    * Easy to integrate into scripts and other tools.
 

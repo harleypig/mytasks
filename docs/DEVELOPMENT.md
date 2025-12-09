@@ -47,31 +47,47 @@ The project uses **`local::lib`** for managing Perl module dependencies. This ke
    source ~/.bashrc  # or source ~/.zshrc
    ```
 
-#### Project-Specific Setup (Optional)
+#### Project-Specific Setup
 
-For project-specific local libraries:
+The project uses a bootstrap script to set up the local::lib environment:
 
 ```bash
-# Set up local::lib for this project
-eval "$(perl -Mlocal::lib=./.local-lib)"
+./scripts/bootstrap.sh
 ```
 
-This creates a `.local-lib/` directory in the project root for dependencies. The dot-prefix keeps the root directory clean (see [Directory Naming Conventions](#directory-naming-conventions)).
+This script:
+* Creates the `.local-lib/` directory in the project root (dot-prefixed to keep the root directory clean)
+* Generates `scripts/local-env.sh` with the necessary environment variables for local::lib
+* Installs project dependencies automatically (if dependency files exist)
+
+After running the bootstrap script, you must manually source `scripts/local-env.sh` to activate the environment:
+
+```bash
+source scripts/local-env.sh
+```
+
+**Note**: The bootstrap script only needs to be run once (or after cloning the repository). However, you must source `scripts/local-env.sh` each time you start a new shell session to work on the project.
 
 ### Installing Perl Modules
 
-Once `local::lib` is configured, install project dependencies using `cpanm`:
+Before installing or using Perl modules, ensure you have sourced the local::lib environment:
+
+```bash
+source scripts/local-env.sh
+```
+
+Then install project dependencies using `cpanm`:
 
 ```bash
 # Install cpanm if not already installed (uses local::lib)
 curl -L https://cpanmin.us | perl - App::cpanminus
 
 # Install project dependencies (when defined)
-# Modules will be installed to your local::lib directory
+# Modules will be installed to your .local-lib directory
 cpanm --installdeps .
 ```
 
-**Note**: With `local::lib` configured, `cpanm` will automatically install modules to your local library directory without requiring root access.
+**Note**: With `local::lib` configured and `scripts/local-env.sh` sourced, `cpanm` will automatically install modules to your `.local-lib/` directory without requiring root access.
 
 ### Key CPAN Modules
 
@@ -92,7 +108,7 @@ Based on the implementation notes, the project will use:
 ## Project Structure
 
 ```
-mytasks/
+mytask/
 ├── .local-lib/        # local::lib directory (dot-named for clean root)
 ├── bin/               # Tool scripts (the application executables)
 ├── scripts/           # Development scripts (e.g., local-env.sh)
@@ -126,19 +142,49 @@ To keep the root directory clean, files and directories that are not part of the
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd mytasks
+   cd mytask
    ```
 
-2. Review documentation:
+2. Run the bootstrap script:
+   ```bash
+   ./scripts/bootstrap.sh
+   ```
+   This script:
+   * Sets up the `.local-lib/` directory for project-specific Perl modules
+   * Creates `scripts/local-env.sh` with the necessary environment variables
+   * Installs project dependencies (if `cpanfile`, `Makefile.PL`, or `Build.PL` exists)
+
+3. Activate the local::lib environment:
+   ```bash
+   source scripts/local-env.sh
+   ```
+   **Important**: You must source `scripts/local-env.sh` each time you work on this project (see [Working on the Project](#working-on-the-project)).
+
+4. Review documentation:
    * Start with `docs/README.md` for project overview
    * Review `docs/milestones.md` for development milestones
    * Check `docs/design-decisions.md` for key design choices
-
-3. Set up development environment:
-   * Install Perl and required tools
-   * Configure `local::lib` (see [Perl Environment Setup](#perl-environment-setup))
-   * Install CPAN modules as needed
    * Review `AGENTS.md` for development guidelines
+
+### Working on the Project
+
+Each time you start working on the project in a new shell session, you must activate the local::lib environment:
+
+```bash
+source scripts/local-env.sh
+```
+
+This sets up the necessary environment variables (like `PERL5LIB`) so that Perl can find modules installed in `.local-lib/`. Without sourcing this script, Perl commands won't be able to use the project's local dependencies.
+
+**Why manual sourcing?** The bootstrap script doesn't automatically source the environment for your shell because:
+* Environment variables set in a script don't persist to your shell session
+* Making it explicit helps you understand what's happening
+* You'll remember to source it each time you work on the project
+
+You can verify the environment is active by checking for the `PERL5LIB` variable:
+```bash
+echo $PERL5LIB
+```
 
 ### Working on Milestones
 

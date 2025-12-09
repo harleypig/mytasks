@@ -193,10 +193,10 @@ Environment variables provide a way to override configuration settings without m
 ```bash
 # Set data directory via environment variable
 export MYTASK_DATA_DIR=/path/to/tasks
-task list
+mytask list
 
 # Override with CLI option (takes precedence)
-task list --data-dir /other/path
+mytask list --data-dir /other/path
 ```
 
 ### Future Extensibility

@@ -57,12 +57,12 @@ Milestones should be completed in order, as later milestones may depend on earli
 **Goal**: Implement the core CLI commands for basic task operations.
 
 **Scope**:
-* `task add` - Create a new task
-* `task list` - List tasks with optional filtering
-* `task show` - Display details of a specific task
-* `task done` - Mark a task as completed
-* `task edit` - Edit an existing task
-* `task delete` - Delete a task
+* `mytask add` - Create a new task
+* `mytask list` - List tasks with optional filtering
+* `mytask show` - Display details of a specific task
+* `mytask done` - Mark a task as completed
+* `mytask edit` - Edit an existing task
+* `mytask delete` - Delete a task
 
 **Requirements**:
 * Commands work with the task file format from Milestone 1
@@ -97,7 +97,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Configuration hierarchy resolution (CLI > environment variables > data directory > global > defaults)
 * Configuration file parsing and validation
 * Support for `--data-dir` and `--config` CLI options
-* `task config dump` command for viewing default or resolved configuration
+* `mytask config dump` command for viewing default or resolved configuration
 
 **Requirements**:
 * Define reasonable built-in defaults for all configuration values
@@ -108,13 +108,13 @@ Milestones should be completed in order, as later milestones may depend on earli
 * CLI options override environment variables and configuration files
 * Environment variables override configuration files
 * Graceful handling of missing configuration files
-* `task config dump` outputs TOML format matching configuration file structure
+* `mytask config dump` outputs TOML format matching configuration file structure
 
 **Deliverables**:
 * Built-in default configuration values (documented)
 * Configuration management implementation
 * Environment variable parsing and resolution
-* `task config dump` command implementation
+* `mytask config dump` command implementation
 * Documentation in `docs/design-decisions.md` (Configuration System section)
 * Example configuration files
 * Configuration validation
@@ -125,8 +125,8 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test environment variable parsing and resolution
 * Test configuration hierarchy resolution (verify precedence order)
 * Test CLI option overrides (including environment variables)
-* Test `task config dump --default` shows built-in defaults
-* Test `task config dump` shows resolved configuration
+* Test `mytask config dump --default` shows built-in defaults
+* Test `mytask config dump` shows resolved configuration
 * Test XDG directory handling
 * Test missing configuration file handling
 * Test environment variable naming convention
@@ -193,9 +193,9 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 **Scope**:
 * Extend task file format to include tags field (array of strings)
-* Update `task add` command to accept tags
-* Update `task edit` command to modify tags
-* Update `task list` command to filter by tags
+* Update `mytask add` command to accept tags
+* Update `mytask edit` command to modify tags
+* Update `mytask list` command to filter by tags
 * Document tag format and usage
 * Determine if tag == label
 * Determine if tag must match existing list (which is definable by user) or is free form
@@ -233,7 +233,7 @@ Milestones should be completed in order, as later milestones may depend on earli
   * Auto-completion deadline and action
   * Parent recurrence ID
   * Sequence number
-* Implement `task recur` command for creating recurring tasks
+* Implement `mytask recur` command for creating recurring tasks
 * Implement task generation logic
 * Implement auto-completion logic
 * Support all three recurrence patterns (fixed, relative, sequential)
@@ -273,9 +273,9 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Extend task file format to include dependency fields:
   * Parents (array of task IDs)
   * Dependencies (array of task IDs)
-* Update `task add` command to accept parent/dependency references
-* Update `task edit` command to modify relationships
-* Update `task list` command to show relationships
+* Update `mytask add` command to accept parent/dependency references
+* Update `mytask edit` command to modify relationships
+* Update `mytask list` command to show relationships
 * Implement dependency validation (prevent circular dependencies)
 * Document dependency format and usage
 
@@ -313,9 +313,9 @@ The following milestones are planned but not yet fully defined. They should foll
 
 **Scope**:
 * Extend task file format to include project field (single string)
-* Update `task add` command to accept project
-* Update `task edit` command to modify project
-* Update `task list` command to filter by project
+* Update `mytask add` command to accept project
+* Update `mytask edit` command to modify project
+* Update `mytask list` command to filter by project
 * Document project format and usage
 
 **Requirements**:
