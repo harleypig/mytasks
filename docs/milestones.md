@@ -17,21 +17,23 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ---
 
-## Milestone 1: Task File Format (Basic)
+## Milestone 1: Task File Format (Basic) ✅ COMPLETE
 
 **Goal**: Define and document the basic task file format (TOML structure) with examples for core scenarios.
+
+**Status**: ✅ Complete - All requirements met, tests passing, documentation complete.
 
 **Scope**:
 * Define the TOML structure for task files
 * Document core fields and their purposes:
   * ID (unique identifier)
   * Description
-  * Status (pending, done, deleted)
+  * Status (pending, done, deleted, archived)
   * Created/modified timestamps
   * Due date / scheduled date
 * Create example task files for basic scenarios:
   * Simple task (basic fields only)
-  * Task with notes/body text
+  * Task with timestamped journal entries (notes)
   * Task with due date
   * Completed task
   * Deleted task
