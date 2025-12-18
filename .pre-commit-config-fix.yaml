@@ -46,6 +46,7 @@ repos:
         exclude: Makefile
       - id: mixed-line-ending
         description: Fixes mixed line endings to LF
+        # Fixing variant; check-only variant lives in .pre-commit-config.yaml
         args: ['--fix=lf']
       - id: fix-byte-order-marker
         description: Removes UTF-8 BOM markers

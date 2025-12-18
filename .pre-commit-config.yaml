@@ -12,8 +12,6 @@ repos:
         args: []
       - id: check-symlinks
         description: Checks for broken symlinks
-      # Note: trailing-whitespace and end-of-file-fixer are modifying hooks
-      # and are only in .pre-commit-config-fix.yaml
       - id: check-yaml
         description: Validates YAML syntax
       - id: check-json
@@ -28,6 +26,7 @@ repos:
         description: Detects case conflicts in filenames
       - id: mixed-line-ending
         description: Checks for mixed line endings
+        # Note: check-only here; fixing variant lives in .pre-commit-config-fix.yaml
         args: ['--fix=no']
       - id: check-executables-have-shebangs
         description: Ensures executable files have shebangs
