@@ -3,6 +3,7 @@
 # See https://pre-commit.com for more information
 
 repos:
+  # Generic checks ###############################################################
   # General file checks (non-modifying only)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -35,6 +36,7 @@ repos:
       - id: detect-private-key
         description: Detects private keys in the repository
 
+  # Perl checks ##################################################################
   # Perl syntax checking (local hook)
   # Sources local-env.sh if available to get proper PERL5LIB
   - repo: local
@@ -42,16 +44,13 @@ repos:
       - id: perl-syntax-check
         name: Perl syntax check
         entry: >
-          bash -c '[ -f scripts/local-env.sh ] && source scripts/local-env.sh;
-          output=$(perl -c "$@" 2>&1);
-          if echo "$output" | grep -q "syntax OK"; then exit 0;
-          elif echo "$output" | grep -qE "(syntax error|Compilation failed)";
-          then echo "$output" >&2; exit 1; else exit 0; fi' --
+          bash -c '[ -f scripts/local-env.sh ] && source scripts/local-env.sh; output=$(perl -c "$@" 2>&1); if echo "$output" | grep -q "syntax OK"; then exit 0; elif echo "$output" | grep -qE "(syntax error|Compilation failed)"; then echo "$output" >&2; exit 1; else exit 0; fi' --
         language: system
         types: [perl]
         description: Checks Perl syntax (allows missing dependencies)
         pass_filenames: true
 
+  # Shell checks #################################################################
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.6
@@ -61,10 +60,25 @@ repos:
         args: ['--severity=warning']
         files: \.(sh|bash)$
 
-  # YAML formatting check (read-only)
+  # Configuration checks #########################################################
+  # YAML lint (read-only)
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.33.0
     hooks:
       - id: yamllint
         description: Lints YAML files
-        args: ['-d', '{extends: default, rules: {line-length: {max: 120}}}']
+
+  # GitHub Actions lint
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.9
+    hooks:
+      - id: actionlint-docker
+
+  # YAML formatter (docker, check-only via -lint)
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.20.0
+    hooks:
+      - id: yamlfmt
+        name: yamlfmt (docker, lint mode)
+        description: Lints YAML files using yamlfmt with the repo .yamlfmt config
+        args: ["-lint", "-quiet"]

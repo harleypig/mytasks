@@ -7,6 +7,7 @@
 # for auto-fixes. Use this to check and fix everything in one go during development.
 
 repos:
+  # Generic checks ###############################################################
   # General file checks (same as default config)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -35,6 +36,7 @@ repos:
       - id: detect-private-key
         description: Detects private keys in the repository
 
+  # Generic auto-fixes ###########################################################
   # General file auto-fixes (modifying hooks)
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -60,6 +62,7 @@ repos:
           - --top-keys
           - $schema,title,type,description,additionalProperties,required
 
+  # Perl checks ##################################################################
   # Perl syntax checking (same as default config)
   # Sources local-env.sh if available to get proper PERL5LIB
   - repo: local
@@ -67,16 +70,13 @@ repos:
       - id: perl-syntax-check
         name: Perl syntax check
         entry: >
-          bash -c '[ -f scripts/local-env.sh ] && source scripts/local-env.sh;
-          output=$(perl -c "$@" 2>&1);
-          if echo "$output" | grep -q "syntax OK"; then exit 0;
-          elif echo "$output" | grep -qE "(syntax error|Compilation failed)";
-          then echo "$output" >&2; exit 1; else exit 0; fi' --
+          bash -c '[ -f scripts/local-env.sh ] && source scripts/local-env.sh; output=$(perl -c "$@" 2>&1); if echo "$output" | grep -q "syntax OK"; then exit 0; elif echo "$output" | grep -qE "(syntax error|Compilation failed)"; then echo "$output" >&2; exit 1; else exit 0; fi' --
         language: system
         types: [perl]
         description: Checks Perl syntax (allows missing dependencies)
         pass_filenames: true
 
+  # Shell checks #################################################################
   # Shell script linting (same as default config)
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.6
@@ -86,23 +86,37 @@ repos:
         args: ['--severity=warning']
         files: \.(sh|bash)$
 
-  # YAML formatting check (same as default config)
+  # Configuration checks #########################################################
+  # YAML lint (same as default config)
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.33.0
     hooks:
       - id: yamllint
         description: Lints YAML files
-        args: ['-d', '{extends: default, rules: {line-length: {max: 120}}}']
 
-  # Perl formatting (if perltidy is available)
-  #   Note: This requires perltidy to be installed separately
-  #   Uncomment if perltidy is installed and desired
-  # - repo: local
-  #   hooks:
-  #     - id: perltidy
-  #       name: perltidy
-  #       entry: perltidy
-  #       language: system
-  #       types: [perl]
-  #       args: ['--profile=.perltidyrc', '--backup-and-modify-in-place']
-  #       pass_filenames: true
+  # GitHub Actions lint
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.9
+    hooks:
+      - id: actionlint-docker
+
+  # YAML formatter (docker, formatting mode)
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.20.0
+    hooks:
+      - id: yamlfmt
+        name: yamlfmt (docker, format)
+        description: Formats YAML files using yamlfmt with the repo .yamlfmt config
+
+# Perl formatting (if perltidy is available)
+#   Note: This requires perltidy to be installed separately
+#   Uncomment if perltidy is installed and desired
+# - repo: local
+#   hooks:
+#     - id: perltidy
+#       name: perltidy
+#       entry: perltidy
+#       language: system
+#       types: [perl]
+#       args: ['--profile=.perltidyrc', '--backup-and-modify-in-place']
+#       pass_filenames: true

@@ -46,3 +46,4 @@ rules:
   # Colons - require space after colon
   colons:
     max-spaces-before: 0
+    # There is no option for min-spaces-after
