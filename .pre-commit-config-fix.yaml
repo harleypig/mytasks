@@ -11,6 +11,9 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
+      - id: no-commit-to-branch
+        description: "Prevent commits to protected branches (default: master, main)"
+        args: []
       - id: check-yaml
         description: Validates YAML syntax
       - id: check-json
@@ -45,17 +48,6 @@ repos:
   # Sources local-env.sh if available to get proper PERL5LIB
   - repo: local
     hooks:
-      - id: prevent-commit-on-master
-        name: Prevent commits on master branch
-        entry: >
-          bash -c 'branch=$(git rev-parse --abbrev-ref HEAD);
-          if [ "$branch" = "master" ]; then
-            echo "Commit blocked: branch is master";
-            exit 1;
-          fi'
-        language: system
-        types: [file]
-        pass_filenames: false
       - id: perl-syntax-check
         name: Perl syntax check
         entry: >
