@@ -14,10 +14,14 @@ repos:
       - id: no-commit-to-branch
         description: "Prevent commits to protected branches (default: master, main)"
         args: []
+      - id: check-symlinks
+        description: Checks for broken symlinks
       - id: check-yaml
         description: Validates YAML syntax
       - id: check-json
         description: Validates JSON syntax
+      - id: check-toml
+        description: Validates TOML syntax
       - id: check-added-large-files
         description: Prevents committing large files
       - id: check-merge-conflict
@@ -43,6 +47,8 @@ repos:
         args: ['--fix=lf']
       - id: fix-byte-order-marker
         description: Removes UTF-8 BOM markers
+      - id: detect-private-key
+        description: Detects private keys in the repository
 
   # Perl syntax checking (same as default config)
   # Sources local-env.sh if available to get proper PERL5LIB
