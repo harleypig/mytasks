@@ -1,4 +1,4 @@
-.PHONY: test test-verbose test-parallel clean
+.PHONY: all test test-verbose test-parallel test-file clean help
 
 # Default target
 all: test
