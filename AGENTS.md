@@ -56,7 +56,15 @@ is committed or pushed.
 
 * Two configs live at the repo root:
   * `.pre-commit-config.yaml` → **checks only** (non‑modifying).
-  * `.pre-commit-config-fix.yaml` → **auto‑fixes only** (modifying hooks).
+    * Used by git hooks (via `pre-commit install`) and CI/GitHub Actions.
+    * Runs all validation checks without modifying any files.
+    * This is the default config used when running `pre-commit run`.
+  * `.pre-commit-config-fix.yaml` → **checks + auto‑fixes** (modifying hooks).
+    * Includes ALL checks from `.pre-commit-config.yaml` PLUS modifying hooks.
+    * Use during development to check and fix everything in one go.
+    * Must be run explicitly: `pre-commit run --all-files --config .pre-commit-config-fix.yaml`.
+* **Critical**: The fix config MUST include all check hooks from the default config.
+  The fix config is NOT just auto-fixes—it's checks + fixes combined.
 * Hooks SHOULD be fast and deterministic; long/slow checks belong in CI.
 * All hooks MUST be platform‑portable (Windows/Linux/macOS) or be clearly
   marked and skipped on unsupported platforms.
@@ -64,9 +72,12 @@ is committed or pushed.
 **Agent Behavior:**
 
 * Install if missing: `pre-commit install` (no prompting needed).
+  * This installs hooks using `.pre-commit-config.yaml` (checks only).
 * Default to checks: run `pre-commit run --all-files`.
+  * Uses `.pre-commit-config.yaml` by default (checks only, non-modifying).
 * When an auto‑fix is appropriate and safe, ask the user, then run:
     `pre-commit run --all-files --config .pre-commit-config-fix.yaml`.
+  * This runs all checks AND applies auto-fixes in one pass.
 * To target a single hook, prefer `pre-commit run <hook> --all-files`
     (or with `--config ...-fix.yaml` for fix variants).
 * If the repository lacks these configs, **suggest** adding them (and offer a
@@ -75,6 +86,7 @@ is committed or pushed.
 **CI Guidance:**
 
 * CI SHOULD run the same checks as local: `pre-commit run --all-files`.
+  * Uses `.pre-commit-config.yaml` by default (checks only).
 * Fail the job on any violation; do not auto‑commit fixes in CI.
 
 ## General Development Principles
