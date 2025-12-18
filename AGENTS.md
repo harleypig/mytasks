@@ -63,6 +63,9 @@ is committed or pushed.
     * Includes ALL checks from `.pre-commit-config.yaml` PLUS modifying hooks.
     * Use during development to check and fix everything in one go.
     * Must be run explicitly: `pre-commit run --all-files --config .pre-commit-config-fix.yaml`.
+  * Hooks that support both check and fix modes MAY appear in both configs, but:
+    * In the default config they MUST be configured as **check-only/non‑modifying**.
+    * In the fix config they MAY be configured in fixing mode (e.g., `--fix=...`), and may live in a different section (e.g., “fixes”) to keep intent clear.
 * **Critical**: The fix config MUST include all check hooks from the default config.
   The fix config is NOT just auto-fixes—it's checks + fixes combined.
 * Hooks SHOULD be fast and deterministic; long/slow checks belong in CI.
