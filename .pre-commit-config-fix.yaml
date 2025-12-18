@@ -32,6 +32,8 @@ repos:
         description: Ensures executable files have shebangs
       - id: check-shebang-scripts-are-executable
         description: Ensures scripts with shebangs are executable
+      - id: detect-private-key
+        description: Detects private keys in the repository
 
   # General file auto-fixes (modifying hooks)
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -47,8 +49,6 @@ repos:
         args: ['--fix=lf']
       - id: fix-byte-order-marker
         description: Removes UTF-8 BOM markers
-      - id: detect-private-key
-        description: Detects private keys in the repository
 
   # Perl syntax checking (same as default config)
   # Sources local-env.sh if available to get proper PERL5LIB
