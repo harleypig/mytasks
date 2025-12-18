@@ -50,6 +50,9 @@ repos:
         args: ['--fix=lf']
       - id: fix-byte-order-marker
         description: Removes UTF-8 BOM markers
+      - id: pretty-format-json
+        description: Formats JSON with 2-space indent; sorts keys for normalization
+        args: ['--autofix', '--indent', '2', '--no-ensure-ascii']
 
   # Perl syntax checking (same as default config)
   # Sources local-env.sh if available to get proper PERL5LIB
