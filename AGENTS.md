@@ -344,13 +344,13 @@ languages.
 
 **Branch Management:**
 
-* Create feature branches from the latest main branch.
+* Create feature branches from the latest **default branch** (see `WORKFLOW.md` for which branch is protected in this repo; currently `master`).
 * Prefix branches appropriately:
   * `feature/` for new features
   * `bugfix/` for fixes
   * `refactor/` for refactoring
 * Confirm before switching branches.
-* Avoid auto-switching back to `master` unless user confirms.
+* Avoid auto-switching back to the protected default branch (`master` in this repo) unless the user confirms.
 
 **Git Operations:**
 
@@ -368,7 +368,7 @@ languages.
 **Automation:**
 
 * Use pre-commit hooks for linting and formatting.
-* Enable branch protection on `main`.
+* Enable branch protection on the **default branch** (see `WORKFLOW.md`; currently `master`).
 
 ## Monitoring Agents
 
