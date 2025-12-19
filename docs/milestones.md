@@ -44,9 +44,6 @@ Milestones should be completed in order, as later milestones may depend on earli
 ### Performance Philosophy
 - Optimize for human-scale use; prefer simplicity over premature optimization. Profile only when users report issues.
 
-### Commitizen Configuration Follow-ups
-- (See `TODO.md` for the actionable checklist.)
-
 ---
 
 ## Milestone 1: Task File Format (Basic) ✅ COMPLETE
