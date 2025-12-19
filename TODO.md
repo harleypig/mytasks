@@ -20,3 +20,11 @@ Track milestone progress. All milestone details, open questions, and decisions l
 - [ ] Conflict Handling
 - [ ] Show/Reminder Fields & Forgiving Recovery
 - [ ] Additional UIs (TUI/Web/Android) and packaging (Docker, PAR::Packer)
+
+## Commitizen Configuration Follow-ups
+
+- [ ] Decide on changelog handling and add `changelog_file` if/when `cz bump` is used (e.g., `CHANGELOG.md`).
+- [ ] Enforce concise titles by setting `message_length_limit` (suggested: 72).
+- [ ] Decide whether to explicitly allow autosquash prefixes; add `allowed_prefixes` for `fixup!` / `squash!` if desired.
+- [ ] Confirm whether to keep `update_changelog_on_bump: true` now or defer until the release workflow is defined.
+- [ ] Align tagging style: if tags should be prefixed (e.g., `v1.2.3`), set `tag_format: v$version`; otherwise keep `$version`.

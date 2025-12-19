@@ -45,11 +45,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 - Optimize for human-scale use; prefer simplicity over premature optimization. Profile only when users report issues.
 
 ### Commitizen Configuration Follow-ups
-- Decide on changelog handling (`changelog_file` when `cz bump` is used).
-- Set `message_length_limit` (suggested: 72).
-- Decide whether to list autosquash prefixes in `allowed_prefixes`.
-- Confirm `update_changelog_on_bump` timing.
-- Align `tag_format` (e.g., `v$version` vs `$version`).
+- (See `TODO.md` for the actionable checklist.)
 
 ---
 
