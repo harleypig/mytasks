@@ -24,7 +24,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ### Testing
 - Each milestone needs comprehensive tests (happy paths, edge cases, error cases, multi-host where relevant).
-- Open questions: testing framework choice (e.g., Test::More/Test2), git-integration test strategy, coverage goals.
+- Testing framework: Perl `Test::More` (existing suite); extend with supporting modules as needed. Git-integration strategy and coverage goals remain to be refined.
 
 ### Program Help
 - Every CLI command/option must include `--help` with concise examples; consider a `task help` command for discovery.
