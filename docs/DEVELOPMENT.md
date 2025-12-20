@@ -374,6 +374,20 @@ Documentation follows these principles:
 * Clear, practical examples
 * Consistent terminology
 
+## Perltidy and githook-perltidy
+
+To keep Perl sources tidy, you can use `githook-perltidy` as a Git
+pre-commit hook. Quick setup:
+
+1. Install the tool (example): `cpanm App::githook::perltidy`
+2. Ensure `.perltidyrc` (or `.perltidyrc.sweetened`) exists in the repo
+3. Install the hook from repo root: `githook-perltidy install`
+4. Optional: add `.podtidy-opts` and `.perlcriticrc` if you want Pod::Tidy
+   and Perl::Critic to run too
+
+Docs and options: [githook-perltidy README](https://github.com/mlawren/githook-perltidy).
+Set `NO_GITHOOK_PERLTIDY=1` to temporarily skip the hook if needed.
+
 ## Contributing
 
 For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
