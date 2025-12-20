@@ -93,6 +93,11 @@ repos:
     hooks:
       - id: yamllint
         description: Lints YAML files
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks-docker
+        description: Detects secrets using gitleaks (docker)
 
   # GitHub Actions lint
   - repo: https://github.com/rhysd/actionlint
