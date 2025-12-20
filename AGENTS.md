@@ -68,7 +68,7 @@ is committed or pushed.
     * In the fix config they MAY be configured in fixing mode (e.g., `--fix=...`), and may live in a different section (e.g., “fixes”) to keep intent clear.
 * **Critical**: The fix config MUST include all check hooks from the default config.
   The fix config is NOT just auto-fixes—it's checks + fixes combined.
-  * **Exceptions**: Check `WORKFLOW.md` for repository-specific exceptions. For this repo, commitizen hooks do **not** need to be duplicated in the fix config (they are non-modifying and already covered in the default config).
+* **Exceptions**: Check `WORKFLOW.md` for repository-specific exceptions (either hooks present only in default or only in fix). Follow the repo’s explicitly documented exceptions instead of duplicating blindly.
 * Hooks SHOULD be fast and deterministic; long/slow checks belong in CI.
 * All hooks MUST be platform‑portable (Windows/Linux/macOS) or be clearly
   marked and skipped on unsupported platforms.

@@ -159,6 +159,7 @@ required by external tools (such as Makefiles).
   `pre-commit run --all-files --config .pre-commit-config-fix.yaml` (applies auto-fixes and reruns checks).
 - The default config (`.pre-commit-config.yaml`) is checks-only and is used by git hooks and CI/GitHub Actions.
 - CI SHOULD run `pre-commit run --all-files` (checks-only) and fail on violations.
+- Exception: Commitizen hooks are non-modifying; they live only in `.pre-commit-config.yaml` and are not duplicated in `.pre-commit-config-fix.yaml`.
 
 ### Commit Messages
 
