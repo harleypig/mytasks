@@ -451,15 +451,3 @@ Here is the complete list of milestones in priority order:
 * **Export/Import** - Format conversion functionality
 * **Conflict Handling** - Merge conflict detection and assistance
 * **Projects** - Project/context organization (moved to future milestones, was Milestone 5)
-
----
-
-## Milestone Tracking
-
-As milestones are completed, update this document to mark them as complete and add completion dates.
-
-**Completed Milestones**: None yet
-
-**In Progress**: None yet
-
-**Next Up**: Milestone 1 (Task File Format - Basic)
