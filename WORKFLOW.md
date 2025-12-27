@@ -106,6 +106,40 @@ should be automatically applied based on context:
 - Request: "create branch refactor-parser"
   → Ask: "Is this a feature, bugfix, or milestone branch?"
 
+### Protected Master Branch
+
+**Important**: The GitHub `master` branch is protected and **cannot be pushed to directly**.
+
+**Requirements**:
+- **All changes must be made in a branch**: Never commit directly to `master`. Always create a feature, bugfix, or milestone branch first.
+- **Pull requests required for master**: All changes must be merged into `master` via pull requests created on GitHub using the `gh` CLI tool.
+- **No direct pushes**: Direct pushes to `master` are blocked by branch protection rules.
+
+**Workflow**:
+1. Create a branch from `master` (or the latest `master`): `git checkout -b feature/my-feature`
+2. Make your changes and commit them
+3. Push the branch to GitHub: `git push -u origin feature/my-feature`
+4. Create a pull request using `gh` CLI: `gh pr create --title "Description" --body "Details"`
+5. Review and merge the PR on GitHub (or via `gh pr merge`). The master branch is protected by a GitHub Actions workflow (see `.github/workflow/self-review-gate.yml`)
+
+**Example**:
+```bash
+# Create branch
+git checkout -b feature/add-new-command
+
+# Make changes and commit
+git add .
+git commit -m "feat: add new command"
+
+# Push branch
+git push -u origin feature/add-new-command
+
+# Create PR
+gh pr create --title "Add new command" --body "Implements the new command feature"
+```
+
+This workflow ensures all changes are reviewed and tested before being merged to `master`.
+
 ### Code Formatting
 
 **Indentation**: Use 2-space indentation for all code files. Do not use tabs
@@ -118,6 +152,14 @@ line length.
 **Enforcement**: All Perl files, test files, configuration files, and
 documentation should use 2-space indentation. Tabs should only be used when
 required by external tools (such as Makefiles).
+
+### Pre-commit Usage
+
+- If pre-commit is installed and a fix config (`.pre-commit-config-fix.yaml`) exists, run it before committing:
+  `pre-commit run --all-files --config .pre-commit-config-fix.yaml` (applies auto-fixes and reruns checks).
+- The default config (`.pre-commit-config.yaml`) is checks-only and is used by git hooks and CI/GitHub Actions.
+- CI SHOULD run `pre-commit run --all-files` (checks-only) and fail on violations.
+- Exception: Commitizen hooks are non-modifying; they live only in `.pre-commit-config.yaml` and are not duplicated in `.pre-commit-config-fix.yaml`.
 
 ### Commit Messages
 
@@ -148,4 +190,3 @@ Follow conventional commit format when applicable:
 - Integration tests should verify milestone functionality works with
   previous milestones
 - Test coverage should be documented
-

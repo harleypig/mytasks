@@ -1,0 +1,135 @@
+---
+# Pre-commit configuration - Checks + Auto-fixes (modifying hooks)
+# See https://pre-commit.com for more information
+# Use with: pre-commit run --all-files --config .pre-commit-config-fix.yaml
+#
+# This config includes all checks from .pre-commit-config.yaml PLUS modifying hooks
+# for auto-fixes. Use this to check and fix everything in one go during development.
+
+repos:
+  # Generic checks ###############################################################
+  # General file checks (same as default config)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: no-commit-to-branch
+        description: "Prevent commits to protected branches (default: master, main)"
+        args: []
+      - id: check-symlinks
+        description: Checks for broken symlinks
+      - id: check-yaml
+        description: Validates YAML syntax
+      - id: check-json
+        description: Validates JSON syntax
+      - id: check-toml
+        description: Validates TOML syntax
+      - id: check-added-large-files
+        description: Prevents committing large files
+      - id: check-merge-conflict
+        description: Detects merge conflict markers
+      - id: check-case-conflict
+        description: Detects case conflicts in filenames
+      - id: check-executables-have-shebangs
+        description: Ensures executable files have shebangs
+      - id: check-shebang-scripts-are-executable
+        description: Ensures scripts with shebangs are executable
+      - id: detect-private-key
+        description: Detects private keys in the repository
+
+  # Generic auto-fixes ###########################################################
+  # General file auto-fixes (modifying hooks)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        description: Trims trailing whitespace
+      - id: end-of-file-fixer
+        description: Ensures files end with a newline
+        exclude: Makefile
+      - id: mixed-line-ending
+        description: Fixes mixed line endings to LF
+        # Fixing variant; check-only variant lives in .pre-commit-config.yaml
+        args: ['--fix=lf']
+      - id: fix-byte-order-marker
+        description: Removes UTF-8 BOM markers
+      - id: pretty-format-json
+        description: Formats JSON with 2-space indent; sorts keys for normalization
+        args:
+          - --autofix
+          - --indent
+          - '2'
+          - --no-ensure-ascii
+          - --top-keys
+          - $schema,title,type,description,additionalProperties,required
+
+  # Perl checks ##################################################################
+  # Perl syntax checking (same as default config)
+  # Sources local-env.sh if available to get proper PERL5LIB
+  - repo: local
+    hooks:
+      - id: perl-syntax-check
+        name: Perl syntax check
+        entry: |
+          bash -c '
+            [ -f scripts/local-env.sh ] && source scripts/local-env.sh;
+            output=$(perl -c "$@" 2>&1);
+            if echo "$output" | grep -q "syntax OK"; then exit 0;
+            elif echo "$output" | grep -qE "(syntax error|Compilation failed)";
+            then echo "$output" >&2; exit 1; else exit 0; fi' --
+        language: system
+        types: [perl]
+        description: Checks Perl syntax (allows missing dependencies)
+        pass_filenames: true
+
+  # Shell checks #################################################################
+  # Shell script linting (same as default config)
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
+    hooks:
+      - id: shellcheck
+        description: Lints shell scripts
+        args: ['--severity=warning']
+        files: \.(sh|bash)$
+
+  # Configuration checks #########################################################
+  # YAML lint (same as default config)
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        description: Lints YAML files
+        args: ['-d', '{extends: default, rules: {line-length: {max: 120}}}']
+
+  # Secret scanning (docker)
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks-docker
+        description: Detects secrets using gitleaks (docker)
+
+  # GitHub Actions lint
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.9
+    hooks:
+      - id: actionlint-docker
+
+  # YAML formatter (docker, formatting mode)
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.20.0
+    hooks:
+      - id: yamlfmt
+        name: yamlfmt (docker, format)
+        description: Formats YAML files using yamlfmt with the repo .yamlfmt config
+
+# Perl formatting (if perltidy is available)
+#   Note: This requires perltidy to be installed separately
+#   Uncomment if perltidy is installed and desired
+# - repo: local
+#   hooks:
+#     - id: perltidy
+#       name: perltidy
+#       entry: perltidy
+#       language: system
+#       types: [perl]
+#       args: ['--profile=.perltidyrc', '--backup-and-modify-in-place']
+#       pass_filenames: true

@@ -17,6 +17,35 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ---
 
+## Cross-Milestone Considerations
+
+### Forgiveness Principle
+- Be forgiving in file format parsing, CLI input, and data validation; preserve user intent and recover gracefully from malformed input or files.
+
+### Testing
+- Each milestone needs comprehensive tests (happy paths, edge cases, error cases, multi-host where relevant).
+- Testing framework: Perl `Test::More` (existing suite); extend with supporting modules as needed. Git-integration strategy and coverage goals remain to be refined.
+
+### Program Help
+- Every CLI command/option must include `--help` with concise examples; consider a `task help` command for discovery.
+
+### Documentation
+- Complete docs before marking a milestone done; include usage, configuration, examples, edge cases, and limitations.
+
+### Hooks Integration
+- Identify hook events, required context, and examples for new functionality; pre-hooks may modify/abort, post-hooks may trigger side effects.
+
+### Configuration Needs
+- Follow the precedence hierarchy (CLI > env vars > data dir > global > defaults); document defaults and validation.
+
+### Quality and UX
+- Consistent error messages/logging, clear output formats, multi-host safety, backward-compatibility awareness, validation of inputs/config/data, and good user feedback.
+
+### Performance Philosophy
+- Optimize for human-scale use; prefer simplicity over premature optimization. Profile only when users report issues.
+
+---
+
 ## Milestone 1: Task File Format (Basic) ✅ COMPLETE
 
 **Goal**: Define and document the basic task file format (TOML structure) with examples for core scenarios.
@@ -84,6 +113,9 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test `--data-dir` option
 
 **Dependencies**: Milestone 1 (Task File Format)
+
+**Open Questions**:
+* CLI command name: `mytask`, `task`, `tt`/`t`, or another option? Balance memorability, conflicts, and clarity.
 
 ---
 
@@ -222,6 +254,11 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 **Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Basic Commands)
 
+**Open Questions**:
+* Are tags equivalent to labels?
+* Should tags be constrained to a predefined list or be free-form?
+* Should tags be case-sensitive or case-insensitive?
+
 ---
 
 ## Milestone 6: Recurring Tasks
@@ -265,6 +302,13 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 **Versioning**: **Major version change** (`X.0.0`) - This milestone introduces breaking changes to the task file format (recurrence fields) and CLI interface (new commands).
 
+**Open Questions**:
+* Auto-completion timing: cron/background/on-demand? Run on every command or explicit only?
+* Multi-host coordination: timestamps/sequence numbers/locks?
+* Recurrence template storage: in task file vs separate template vs config?
+* Default action for incomplete recurring tasks: complete/skip/delete; per-task vs global setting?
+* Support converting tasks to/from recurring?
+
 ---
 
 ## Milestone 7: Task Dependencies
@@ -302,6 +346,10 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test edge cases (missing dependencies, deleted tasks, etc.)
 
 **Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Basic Commands)
+
+**Open Questions**:
+* Depth of support: simple parent/child, multiple parents, full DAG, dependency chains?
+* Representation in TOML that survives sync/merge? (arrays of task IDs recommended to start)
 
 ---
 
@@ -344,6 +392,11 @@ The following milestones are planned but not yet fully defined. They should foll
 
 **Goal**: Detect and interact with git repositories for sync.
 
+**Design Considerations**:
+* Locking strategies: advisory locking, rely on git conflicts, or file locking (e.g., `File::NFSLock`).
+* Conflict resolution: field-wise merge vs last-writer-wins vs manual resolution via git tools.
+* Recommended approach: advisory locking for same-machine edits; rely on git for multi-machine sync; hybrid conflict handling (timestamps tracked, status last-writer-wins with detection, descriptions/notes via merge markers, tags/dependencies union-merged).
+
 **Dependencies**: Milestone 2 (Basic Commands), Milestone 3 (Configuration Handling)
 
 ### Export/Import
@@ -357,6 +410,26 @@ The following milestones are planned but not yet fully defined. They should foll
 **Goal**: Detect and assist with merge conflicts in task files.
 
 **Dependencies**: Milestone 2 (Basic Commands), Git Integration milestone
+
+### Timestamp Format and Reliability
+
+**Goal**: Evaluate moving from ISO 8601 to Unix epochs (or hybrid) for reliability, while preserving readability and validating manual edits.
+
+### Notes Entry Sorting and Timestamp Handling
+
+**Goal**: Keep `[[notes]]` entries chronologically ordered; handle identical timestamps, out-of-order edits, and large arrays efficiently.
+
+### Invalid Filename and Format Recovery
+
+**Goal**: Detect and repair non-UUID filenames and incomplete/invalid TOML; optionally auto-fix with backups, generate UUIDs, and preserve content.
+
+### Show/Reminder Fields
+
+**Goal**: Add deferred-visibility (`show`/`show_date`) and reminder fields (single or array) using human-friendly relative formats; define parsing, validation, and listing defaults.
+
+### Additional UIs and Packaging
+
+**Goal**: Explore Docker image, curses-based TUI, web UI, Android app, and PAR::Packer packaging.
 
 ---
 
@@ -378,16 +451,3 @@ Here is the complete list of milestones in priority order:
 * **Export/Import** - Format conversion functionality
 * **Conflict Handling** - Merge conflict detection and assistance
 * **Projects** - Project/context organization (moved to future milestones, was Milestone 5)
-
----
-
-## Milestone Tracking
-
-As milestones are completed, update this document to mark them as complete and add completion dates.
-
-**Completed Milestones**: None yet
-
-**In Progress**: None yet
-
-**Next Up**: Milestone 1 (Task File Format - Basic)
-
