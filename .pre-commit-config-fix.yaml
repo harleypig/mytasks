@@ -69,8 +69,13 @@ repos:
     hooks:
       - id: perl-syntax-check
         name: Perl syntax check
-        entry: >
-          bash -c '[ -f scripts/local-env.sh ] && source scripts/local-env.sh; output=$(perl -c "$@" 2>&1); if echo "$output" | grep -q "syntax OK"; then exit 0; elif echo "$output" | grep -qE "(syntax error|Compilation failed)"; then echo "$output" >&2; exit 1; else exit 0; fi' --
+        entry: |
+          bash -c '
+            [ -f scripts/local-env.sh ] && source scripts/local-env.sh;
+            output=$(perl -c "$@" 2>&1);
+            if echo "$output" | grep -q "syntax OK"; then exit 0;
+            elif echo "$output" | grep -qE "(syntax error|Compilation failed)";
+            then echo "$output" >&2; exit 1; else exit 0; fi' --
         language: system
         types: [perl]
         description: Checks Perl syntax (allows missing dependencies)
@@ -93,6 +98,9 @@ repos:
     hooks:
       - id: yamllint
         description: Lints YAML files
+        args: ['-d', '{extends: default, rules: {line-length: {max: 120}}}']
+
+  # Secret scanning (docker)
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.4
     hooks:
@@ -112,6 +120,16 @@ repos:
       - id: yamlfmt
         name: yamlfmt (docker, format)
         description: Formats YAML files using yamlfmt with the repo .yamlfmt config
+
+  # Commit message / branch checks (non-modifying, included for parity)
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.10.1
+    hooks:
+      - id: commitizen
+        name: commitizen (commit-msg)
+        stages: [commit-msg]
+      - id: commitizen-branch
+        stages: [pre-push]
 
 # Perl formatting (if perltidy is available)
 #   Note: This requires perltidy to be installed separately
