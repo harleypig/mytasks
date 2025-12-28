@@ -21,4 +21,3 @@
 - [ ] Evaluate feasibility of severity 1; list blockers if not practical.
 - [ ] Add a dedicated perlcritic CI job (non-modifying) to enforce the stricter profile.
 - [ ] Document perlcritic workflow in `docs/DEVELOPMENT.md` (how to run, common suppressions, expected severity).
-

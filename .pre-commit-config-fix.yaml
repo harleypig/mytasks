@@ -115,7 +115,7 @@ repos:
         language: system
         pass_filenames: true
         types: [perl]
-        entry: scripts/run-perlcritic.sh #magic___^_^___line
+        entry: scripts/run-perlcritic.sh # magic___^_^___line
       - id: perltidy
         name: perltidy (format)
         language: system
