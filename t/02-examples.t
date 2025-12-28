@@ -136,7 +136,6 @@ for my $filename (@example_files) {
       my $notes_ref = $data->{notes};
       ok( ref($notes_ref) eq 'ARRAY', "$filename notes is an array" );
       if ( ref($notes_ref) ne 'ARRAY' ) {
-        ## use critic
         return;
       }
 
