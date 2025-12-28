@@ -2,7 +2,7 @@
 severity = 5
 # force = 0
 # only = 0
-# allow-unsafe = 0
+allow-unsafe = 0
 profile-strictness = quiet
 # Relaxed exclusions
 exclude =
