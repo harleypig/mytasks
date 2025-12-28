@@ -7,7 +7,7 @@
 - [x] Audit `.perlcriticrc` exclusions; remove temporary excludes once code is compliant. (Current exclude list is empty; no temporary excludes remain.)
 - [x] Evaluate `.perlcriticrc` globals (encoding, severity, allow-unsafe, caching, top) for possible tightening before raising severity. (Set `allow-unsafe = 0`; keep severity at 5 for now; top=10 retained; no caching tweaks.)
 - [x] Raise profile-strictness from `quiet` to `warn` (perlcritic valid values: quiet/warn/fatal); "stern" unsupported.
-- [ ] Raise profile-strictness from `stern` to `fatal`, fix any remaining config issues.
+- [x] Raise profile-strictness from `stern` to `fatal`, fix any remaining config issues. (Applied `fatal`; no config issues reported.)
 - [ ] Raise severity 5 → 4; fix new violations.
 - [ ] Raise severity 4 → 3; fix new violations.
 - [ ] Evaluate feasibility of severity 2; list blockers if not practical.
