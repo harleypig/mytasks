@@ -1,7 +1,7 @@
 ## Perlcritic Hardening Tasks
 
 - [x] Re-enable `TestingAndDebugging::RequireUseStrict` for Perl sources; keep hook `types` to Perl.
-- [ ] Re-enable `InputOutput::ProhibitTwoArgOpen` and `InputOutput::ProhibitBarewordFileHandles` by migrating to three-arg `open` with lexical handles.
+- [x] Re-enable `InputOutput::ProhibitTwoArgOpen` and `InputOutput::ProhibitBarewordFileHandles` by migrating to three-arg `open` with lexical handles.
 - [ ] Re-enable `Bangs::ProhibitBitwiseOperators` after replacing intentional bitwise usage or adding scoped `## no critic`.
 - [ ] Re-enable `ValuesAndExpressions::ProhibitAccessOfPrivateData` by using accessors or scoped `## no critic`.
 - [ ] Audit `.perlcriticrc` exclusions; remove temporary excludes once code is compliant.
