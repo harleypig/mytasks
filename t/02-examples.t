@@ -5,7 +5,6 @@ use Test::More;
 use Path::Tiny;
 
 # Check if TOML::Tiny is available
-## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
 BEGIN {
   eval { require TOML::Tiny; 1 } or plan skip_all => 'TOML::Tiny not available';
 }
@@ -31,6 +30,8 @@ for my $filename (@example_files) {
   my $file = $examples_dir->child($filename);
 
   subtest "Testing $filename" => sub {
+
+    ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
 
     # File exists
     ok( $file->exists, "$filename exists" );
@@ -77,6 +78,7 @@ for my $filename (@example_files) {
 
     # Validate [meta] section required fields
     if ( exists $data->{meta} ) {
+      ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
       ok(
         exists $data->{meta}{id},
         "$filename has id in [meta] section"
@@ -125,52 +127,47 @@ for my $filename (@example_files) {
           "$filename modified >= created"
         );
       }
+      ## use critic
     } ## end if ( exists $data->{meta...})
 
     # Validate [[notes]] section if present
+    ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
     if ( exists $data->{notes} ) {
-      ok(
-        ref( $data->{notes} ) eq 'ARRAY',
-        "$filename notes is an array"
-      );
+      my @notes = @{ $data->{notes} // [] }; ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
+      ok( ref( $data->{notes} ) eq 'ARRAY', "$filename notes is an array" );
 
-      if ( ref( $data->{notes} ) eq 'ARRAY' ) {
-        for my $i ( 0 .. $#{ $data->{notes} } ) {
-  my $note = $data->{notes}[$i];
-  ok(
-    exists $note->{timestamp},
-    "$filename note[$i] has timestamp"
+      ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
+      for my $i ( 0 .. $#notes ) {
+        my $note = $notes[$i] // {}; ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
+        ok( exists $note->{timestamp}, "$filename note[$i] has timestamp" );
+        ok( exists $note->{entry},     "$filename note[$i] has entry" );
+
+        if ( exists $note->{timestamp} ) {
+  like(
+    $note->{timestamp},
+    qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+    "$filename note[$i] timestamp is ISO 8601 format"
   );
+        }
+
+        if ( exists $note->{entry} ) {
   ok(
-    exists $note->{entry},
-    "$filename note[$i] has entry"
+    length( $note->{entry} ) > 0,
+    "$filename note[$i] entry is non-empty"
   );
+        }
 
-  if ( exists $note->{timestamp} ) {
-    like(
-      $note->{timestamp},
-      qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
-      "$filename note[$i] timestamp is ISO 8601 format"
-    );
-  }
-
-  if ( exists $note->{entry} ) {
-    ok(
-      length( $note->{entry} ) > 0,
-      "$filename note[$i] entry is non-empty"
-    );
-  }
-
-  # Validate type if present
-  if ( exists $note->{type} ) {
-    like(
-      $note->{type}, qr/^(note|log|comment|status-change)$/,
-      "$filename note[$i] type is valid"
-    );
-  }
-        } ## end for my $i ( 0 .. $#{ $data...})
-      } ## end if ( ref( $data->{notes...}))
+        if ( exists $note->{type} ) {
+  like(
+    $note->{type}, qr/^(note|log|comment|status-change)$/,
+    "$filename note[$i] type is valid"
+  );
+        }
+      } ## end for my $i ( 0 .. $#notes)
+      ## use critic
     } ## end if ( exists $data->{notes...})
+    ## use critic
+    ## use critic
   }; ## end "Testing $filename" => sub
 } ## end for my $filename (@example_files)
 
@@ -179,43 +176,53 @@ subtest "simple-task.toml - minimal fields" => sub {
   my $file = $examples_dir->child('simple-task.toml');
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   ok( !exists $data->{task}{due},   "No due date" );
   ok( !exists $data->{task}{alias}, "No alias" );
   ok( !exists $data->{notes},       "No notes section" );
+  ## use critic
 };
 
 subtest "task-with-notes.toml - journal entries" => sub {
   my $file = $examples_dir->child('task-with-notes.toml');
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   ok( exists $data->{notes},    "Has notes section" );
   ok( @{ $data->{notes} } >= 2, "Has multiple note entries" );
 
   # Check for app log entry
   my $has_log = grep { exists $_->{type} && $_->{type} eq 'log' } @{ $data->{notes} };
   ok( $has_log, "Has at least one log entry" );
+  ## use critic
 };
 
 subtest "completed-task.toml - done status" => sub {
   my $file = $examples_dir->child('completed-task.toml');
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   is( $data->{task}{status}, 'done', "Status is 'done'" );
+  ## use critic
 };
 
 subtest "deleted-task.toml - deleted status" => sub {
   my $file = $examples_dir->child('deleted-task.toml');
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   is( $data->{task}{status}, 'deleted', "Status is 'deleted'" );
+  ## use critic
 };
 
 subtest "task-with-alias.toml - alias field" => sub {
   my $file = $examples_dir->child('task-with-alias.toml');
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   ok( exists $data->{task}{alias},        "Has alias field" );
   ok( length( $data->{task}{alias} ) > 0, "Alias is non-empty" );
+  ## use critic
 };
 
 done_testing;

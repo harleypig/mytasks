@@ -11,17 +11,18 @@ BEGIN {
   };
 }
 
-## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
 use MyTask::Schema qw(validate_task_file get_task_schema);
 
 # Test schema definition
 subtest "Schema definition" => sub {
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   my $schema = get_task_schema();
   ok( $schema,                            "Schema definition exists" );
   ok( exists $schema->{required},         "Has required sections" );
   ok( exists $schema->{properties},       "Has properties definition" );
   ok( exists $schema->{properties}{task}, "Has task section schema" );
   ok( exists $schema->{properties}{meta}, "Has meta section schema" );
+  ## use critic
 };
 
 # Test valid example files
