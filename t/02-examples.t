@@ -60,11 +60,11 @@ sub run_example_checks {
     if ( exists $data->{task} ) {
       ok(
         exists $data->{task}{description},
-        "$filename has description in [task] section"
+        "$filename has description in [task] section",
       );
       ok(
         exists $data->{task}{status},
-        "$filename has status in [task] section"
+        "$filename has status in [task] section",
       );
 
       # Validate description is non-empty
@@ -89,15 +89,15 @@ sub run_example_checks {
       ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
       ok(
         exists $data->{meta}{id},
-        "$filename has id in [meta] section"
+        "$filename has id in [meta] section",
       );
       ok(
         exists $data->{meta}{created},
-        "$filename has created in [meta] section"
+        "$filename has created in [meta] section",
       );
       ok(
         exists $data->{meta}{modified},
-        "$filename has modified in [meta] section"
+        "$filename has modified in [meta] section",
       );
 
       # Validate UUID format
@@ -156,7 +156,7 @@ sub run_example_checks {
         next unless 'HASH' eq ref($note);
 
         ok( exists $note->{timestamp}, "$filename note[$i] has timestamp" );
-        ok( exists $note->{entry},     "$filename note[$i] has entry" );
+        ok( exists $note->{entry},     "$filename note[$i] has entry", );
 
         if ( exists $note->{timestamp} ) {
   like(

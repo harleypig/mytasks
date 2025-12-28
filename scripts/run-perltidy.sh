@@ -10,4 +10,19 @@ source "$PROJECT_ROOT/scripts/local-env.sh"
 # Ensure project libs are first
 export PERL5LIB="$PROJECT_ROOT/lib:$PROJECT_ROOT/t/lib:${PERL5LIB:-}"
 
-exec perlcritic "$@"
+MODE="format"
+if [[ "${1:-}" == "--check" ]]; then
+  MODE="check"
+  shift
+fi
+
+if [[ "$MODE" == "check" ]]; then
+  for f in "$@"; do
+    perltidy --standard-output "$f" >/dev/null
+  done
+else
+  for f in "$@"; do
+    perltidy --nostandard-output --backup-and-modify-in-place --standard-error-output --backup-file-extension=/ "$f"
+  done
+fi
+

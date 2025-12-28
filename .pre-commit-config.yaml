@@ -35,15 +35,6 @@ repos:
       - id: detect-private-key
         description: Detects private keys in the repository
 
-  # Perl syntax/format check (non-modifying)
-  - repo: https://github.com/perltidy/perltidy
-    rev: "20250912.03"
-    hooks:
-      - id: perltidy
-        name: perltidy (check-only)
-        description: Run perltidy to validate formatting/syntax without modifying files
-        entry: bash -c 'for f in "$@"; do perltidy --standard-output "$f" >/dev/null; done' --
-
   # Shell script linting
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.6
@@ -107,3 +98,9 @@ repos:
         pass_filenames: true
         types: [perl]
         entry: scripts/run-perlcritic.sh
+      - id: perltidy
+        name: perltidy (check-only)
+        language: system
+        pass_filenames: true
+        types: [perl]
+        entry: scripts/run-perltidy.sh --check

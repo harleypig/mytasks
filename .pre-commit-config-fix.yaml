@@ -62,19 +62,6 @@ repos:
           - --top-keys
           - $schema,title,type,description,additionalProperties,required
 
-  # Perl formatting (modifying)
-  - repo: https://github.com/perltidy/perltidy
-    rev: "20250912.03"
-    hooks:
-      - id: perltidy
-        name: perltidy (format)
-        description: Run perltidy to format Perl sources
-        args:
-          - --nostandard-output
-          - --backup-and-modify-in-place
-          - --standard-error-output
-          - --backup-file-extension=/
-
   # Shell checks #################################################################
   # Shell script linting (same as default config)
   - repo: https://github.com/shellcheck-py/shellcheck-py
@@ -129,3 +116,9 @@ repos:
         pass_filenames: true
         types: [perl]
         entry: scripts/run-perlcritic.sh #magic___^_^___line
+      - id: perltidy
+        name: perltidy (format)
+        language: system
+        pass_filenames: true
+        types: [perl]
+        entry: scripts/run-perltidy.sh
