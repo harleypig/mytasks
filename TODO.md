@@ -7,12 +7,13 @@ Track milestone progress. All milestone details, open questions, and decisions l
 ## Milestones
 
 - [x] Milestone 1: Task File Format (Basic) — complete
-- [ ] Milestone 2: Basic Commands
-- [ ] Milestone 3: Configuration Handling
-- [ ] Milestone 4: Hooks System
-- [ ] Milestone 5: Tags
-- [ ] Milestone 6: Recurring Tasks
-- [ ] Milestone 7: Task Dependencies
+- [ ] Milestone 2: Error Handling (Exceptions)
+- [ ] Milestone 3: Basic Commands
+- [ ] Milestone 4: Configuration Handling
+- [ ] Milestone 5: Hooks System
+- [ ] Milestone 6: Tags
+- [ ] Milestone 7: Recurring Tasks
+- [ ] Milestone 8: Task Dependencies
 
 ## Future Milestones
 

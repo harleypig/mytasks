@@ -83,7 +83,32 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ---
 
-## Milestone 2: Basic Commands
+## Milestone 2: Error Handling (Exceptions)
+
+**Goal**: Decide on and implement a consistent error-handling approach (exception strategy) across the codebase.
+
+**Scope**:
+* Select exception mechanism (e.g., `Try::Tiny` with `croak` or a structured exception class).
+* Standardize throwing and catching patterns for library code and CLI entry points.
+* Define guidance for when to throw vs. return error tuples.
+* Ensure user-facing errors are friendly and actionable.
+
+**Requirements**:
+* Agree on an exception module/pattern and document it.
+* Convert current fatal `die/croak` in core paths (e.g., schema loading) to the chosen approach or explicitly justify hard exits.
+* Wrap CLI/test entry points to catch and render exceptions consistently.
+* Update tests to assert on exceptions where appropriate.
+
+**Deliverables**:
+* Exception policy documented (patterns, examples, when to throw, how to catch).
+* Updated code paths using the selected approach.
+* Tests updated/added for exception cases.
+
+**Dependencies**: Milestone 1 (Task File Format)
+
+---
+
+## Milestone 3: Basic Commands
 
 **Goal**: Implement the core CLI commands for basic task operations.
 
@@ -112,14 +137,14 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test error handling (invalid input, missing files, etc.)
 * Test `--data-dir` option
 
-**Dependencies**: Milestone 1 (Task File Format)
+**Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Error Handling)
 
 **Open Questions**:
 * CLI command name: `mytask`, `task`, `tt`/`t`, or another option? Balance memorability, conflicts, and clarity.
 
 ---
 
-## Milestone 3: Configuration Handling
+## Milestone 4: Configuration Handling
 
 **Goal**: Implement the multi-tiered configuration system (global, data directory, environment variables, CLI options).
 
@@ -165,11 +190,11 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test missing configuration file handling
 * Test environment variable naming convention
 
-**Dependencies**: Milestone 1 (Task File Format)
+**Dependencies**: Milestone 1 (Task File Format), Milestone 3 (Basic Commands)
 
 ---
 
-## Milestone 4: Hooks System
+## Milestone 5: Hooks System
 
 **Goal**: Implement the hooks system for task operation automation, allowing power users to override built-in functionality and test new components.
 
@@ -215,13 +240,13 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test hook context provision
 * Test hook failures and abort behavior
 
-**Dependencies**: Milestone 2 (Basic Commands), Milestone 3 (Configuration Handling)
+**Dependencies**: Milestone 3 (Basic Commands), Milestone 4 (Configuration Handling)
 
 **Versioning**: Can be minor version change (`X.Y.0`) - Adds new functionality without breaking existing features.
 
 ---
 
-## Milestone 5: Tags
+## Milestone 6: Tags
 
 **Goal**: Add tag support to tasks for categorization and filtering.
 
@@ -252,7 +277,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test tag editing
 * Test edge cases (empty tags, special characters, etc.)
 
-**Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Basic Commands)
+**Dependencies**: Milestone 1 (Task File Format), Milestone 3 (Basic Commands)
 
 **Open Questions**:
 * Are tags equivalent to labels?
@@ -261,7 +286,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ---
 
-## Milestone 6: Recurring Tasks
+## Milestone 7: Recurring Tasks
 
 **Goal**: Implement task generation and auto-completion for repeating tasks.
 
@@ -298,7 +323,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test multi-host scenarios
 * Test edge cases (skipped tasks, early completion, etc.)
 
-**Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Basic Commands), Milestone 3 (Configuration Handling), Milestone 4 (Hooks System)
+**Dependencies**: Milestone 1 (Task File Format), Milestone 3 (Basic Commands), Milestone 4 (Configuration Handling), Milestone 5 (Hooks System)
 
 **Versioning**: **Major version change** (`X.0.0`) - This milestone introduces breaking changes to the task file format (recurrence fields) and CLI interface (new commands).
 
@@ -311,7 +336,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 
 ---
 
-## Milestone 7: Task Dependencies
+## Milestone 8: Task Dependencies
 
 **Goal**: Add parent/child and dependency relationships between tasks.
 
@@ -345,7 +370,7 @@ Milestones should be completed in order, as later milestones may depend on earli
 * Test sync/merge scenarios with dependencies
 * Test edge cases (missing dependencies, deleted tasks, etc.)
 
-**Dependencies**: Milestone 1 (Task File Format), Milestone 2 (Basic Commands)
+**Dependencies**: Milestone 1 (Task File Format), Milestone 3 (Basic Commands)
 
 **Open Questions**:
 * Depth of support: simple parent/child, multiple parents, full DAG, dependency chains?
@@ -438,12 +463,13 @@ The following milestones are planned but not yet fully defined. They should foll
 Here is the complete list of milestones in priority order:
 
 1. **Milestone 1**: Task File Format (Basic) - Simple tasks, notes, status, due dates
-2. **Milestone 2**: Basic Commands - add, list, show, done, edit, delete
-3. **Milestone 3**: Configuration Handling - Multi-tiered config system
-4. **Milestone 4**: Hooks System - Task operation automation and power-user overrides
-5. **Milestone 5**: Tags - Categorization with tags
-6. **Milestone 6**: Recurring Tasks - Task generation and auto-completion
-7. **Milestone 7**: Task Dependencies - Parent/child and dependency relationships
+2. **Milestone 2**: Error Handling (Exceptions) - Decide and implement exception strategy
+3. **Milestone 3**: Basic Commands - add, list, show, done, edit, delete
+4. **Milestone 4**: Configuration Handling - Multi-tiered config system
+5. **Milestone 5**: Hooks System - Task operation automation and power-user overrides
+6. **Milestone 6**: Tags - Categorization with tags
+7. **Milestone 7**: Recurring Tasks - Task generation and auto-completion
+8. **Milestone 8**: Task Dependencies - Parent/child and dependency relationships
 
 **Future Milestones** (not yet fully defined):
 

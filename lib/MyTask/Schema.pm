@@ -3,7 +3,8 @@ package MyTask::Schema;
 use strict;
 use warnings;
 use Exporter 'import';
-use Path::Tiny;
+use Carp       qw(croak);
+use Path::Tiny qw(path);
 use JSON::Schema::Modern;
 use JSON::MaybeXS qw(decode_json);
 
@@ -23,7 +24,9 @@ sub _load_schema {
   my $schema_file = path(__FILE__)->parent->parent->parent->child('docs')->child('schema')->child('task-file-schema.json');
 
   unless ( $schema_file->exists ) {
-    die "Schema file not found: $schema_file";
+    ## no critic (ErrorHandling::RequireUseOfExceptions)
+    croak "Schema file not found: $schema_file";
+    ## use critic
   }
 
   $validator   = JSON::Schema::Modern->new;

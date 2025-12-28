@@ -2,8 +2,10 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Tiny;
+use Path::Tiny qw(path);
 use TOML::Tiny;
+
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
 
 BEGIN {
   eval { require MyTask::Schema; 1 } or do {

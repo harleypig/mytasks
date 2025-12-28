@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Tiny;
+use Path::Tiny qw(path);
+
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
 
 # Check if TOML::Tiny is available
 BEGIN {
@@ -233,3 +235,4 @@ subtest "task-with-alias.toml - alias field" => sub {
 };
 
 done_testing;
+## use critic
