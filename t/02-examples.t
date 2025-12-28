@@ -233,4 +233,3 @@ subtest "task-with-alias.toml - alias field" => sub {
 };
 
 done_testing;
-## use critic
