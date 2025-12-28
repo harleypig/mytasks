@@ -8,6 +8,9 @@
 - [x] Evaluate `.perlcriticrc` globals (encoding, severity, allow-unsafe, caching, top) for possible tightening before raising severity. (Set `allow-unsafe = 0`; keep severity at 5 for now; top=10 retained; no caching tweaks.)
 - [x] Raise profile-strictness from `quiet` to `warn` (perlcritic valid values: quiet/warn/fatal); "stern" unsupported.
 - [ ] Raise profile-strictness from `stern` to `fatal`, fix any remaining config issues.
-- [ ] Raise severity stepwise (e.g., 5 → 4 → 3) and fix new violations per step.
+- [ ] Raise severity 5 → 4; fix new violations.
+- [ ] Raise severity 4 → 3; fix new violations.
+- [ ] Evaluate feasibility of severity 2; list blockers if not practical.
+- [ ] Evaluate feasibility of severity 1; list blockers if not practical.
 - [ ] Add a dedicated perlcritic CI job (non-modifying) to enforce the stricter profile.
 - [ ] Document perlcritic workflow in `docs/DEVELOPMENT.md` (how to run, common suppressions, expected severity).
