@@ -133,12 +133,21 @@ for my $filename (@example_files) {
     # Validate [[notes]] section if present
     ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
     if ( exists $data->{notes} ) {
-      my @notes = @{ $data->{notes} // [] }; ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
-      ok( ref( $data->{notes} ) eq 'ARRAY', "$filename notes is an array" );
+      my $notes_ref = $data->{notes};
+      ok( ref($notes_ref) eq 'ARRAY', "$filename notes is an array" );
+      if ( ref($notes_ref) ne 'ARRAY' ) {
+        ## use critic
+        return;
+      }
+
+      my @notes = @{$notes_ref};
 
       ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
       for my $i ( 0 .. $#notes ) {
-        my $note = $notes[$i] // {}; ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
+        my $note = $notes[$i];
+        ok( ref($note) eq 'HASH', "$filename note[$i] is a hash" );
+        next unless ref($note) eq 'HASH';
+
         ok( exists $note->{timestamp}, "$filename note[$i] has timestamp" );
         ok( exists $note->{entry},     "$filename note[$i] has entry" );
 
@@ -166,7 +175,6 @@ for my $filename (@example_files) {
       } ## end for my $i ( 0 .. $#notes)
       ## use critic
     } ## end if ( exists $data->{notes...})
-    ## use critic
     ## use critic
   }; ## end "Testing $filename" => sub
 } ## end for my $filename (@example_files)
