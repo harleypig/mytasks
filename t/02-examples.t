@@ -1,10 +1,11 @@
 #!/usr/bin/env perl
+## no critic (Modules::ProhibitExcessMainComplexity)
 use strict;
 use warnings;
 use Test::More;
 use Path::Tiny qw(path);
 
-## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::ProhibitCallsToUnexportedSubs Reneeb::ProhibitBlockEval Modules::ProhibitExcessMainComplexity CodeLayout::TabIndentSpaceAlign CodeLayout::ProhibitHashBarewords Bangs::ProhibitVagueNames)
 
 # Check if TOML::Tiny is available
 BEGIN {
@@ -27,9 +28,10 @@ my @example_files = qw(
   task-with-alias.toml
 );
 
-# Test each example file
-for my $filename (@example_files) {
-  my $file = $examples_dir->child($filename);
+# Helper to run per-file checks (kept to control main complexity; suppression remains)
+## no critic (logicLAB::RequireParamsValidate Subroutines::RequireFinalReturn)
+sub run_example_checks {
+  my ( $filename, $file ) = @_;
 
   subtest "Testing $filename" => sub {
 
@@ -72,7 +74,7 @@ for my $filename (@example_files) {
       # Validate status is one of allowed values
       if ( exists $data->{task}{status} ) {
         like(
-          $data->{task}{status}, qr/^(pending|done|deleted|archived)$/,
+          $data->{task}{status}, qr/^(pending|done|deleted|archived)$/x,
           "$filename status is valid"
         );
       }
@@ -96,9 +98,10 @@ for my $filename (@example_files) {
 
       # Validate UUID format
       if ( exists $data->{meta}{id} ) {
+        ## no critic (RegularExpressions::ProhibitComplexRegexes)
         like(
           $data->{meta}{id},
-          qr/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+          qr/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/ix,
           "$filename id is valid UUID v4"
         );
       }
@@ -107,7 +110,7 @@ for my $filename (@example_files) {
       if ( exists $data->{meta}{created} ) {
         like(
           $data->{meta}{created},
-          qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+          qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/x,
           "$filename created timestamp is ISO 8601 format"
         );
       }
@@ -115,7 +118,7 @@ for my $filename (@example_files) {
       if ( exists $data->{meta}{modified} ) {
         like(
           $data->{meta}{modified},
-          qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+          qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/x,
           "$filename modified timestamp is ISO 8601 format"
         );
       }
@@ -129,7 +132,6 @@ for my $filename (@example_files) {
           "$filename modified >= created"
         );
       }
-      ## use critic
     } ## end if ( exists $data->{meta...})
 
     # Validate [[notes]] section if present
@@ -141,7 +143,7 @@ for my $filename (@example_files) {
         return;
       }
 
-      my @notes = @{$notes_ref};
+      my @notes = $notes_ref->@*;
 
       ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
       for my $i ( 0 .. $#notes ) {
@@ -155,7 +157,7 @@ for my $filename (@example_files) {
         if ( exists $note->{timestamp} ) {
   like(
     $note->{timestamp},
-    qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+    qr/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/x,
     "$filename note[$i] timestamp is ISO 8601 format"
   );
         }
@@ -169,16 +171,21 @@ for my $filename (@example_files) {
 
         if ( exists $note->{type} ) {
   like(
-    $note->{type}, qr/^(note|log|comment|status-change)$/,
+    $note->{type}, qr/^(note|log|comment|status-change)$/x,
     "$filename note[$i] type is valid"
   );
         }
       } ## end for my $i ( 0 .. $#notes)
-      ## use critic
     } ## end if ( exists $data->{notes...})
-    ## use critic
   }; ## end "Testing $filename" => sub
-} ## end for my $filename (@example_files)
+  return;
+} ## end sub run_example_checks
+
+# Test each example file
+for my $filename (@example_files) {
+  my $file = $examples_dir->child($filename);
+  run_example_checks( $filename, $file );
+}
 
 # Test specific example files for their unique features
 subtest "simple-task.toml - minimal fields" => sub {
@@ -189,7 +196,6 @@ subtest "simple-task.toml - minimal fields" => sub {
   ok( !exists $data->{task}{due},   "No due date" );
   ok( !exists $data->{task}{alias}, "No alias" );
   ok( !exists $data->{notes},       "No notes section" );
-  ## use critic
 };
 
 subtest "task-with-notes.toml - journal entries" => sub {
@@ -197,13 +203,12 @@ subtest "task-with-notes.toml - journal entries" => sub {
   my $data = TOML::Tiny->new->decode( $file->slurp );
 
   ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
-  ok( exists $data->{notes},    "Has notes section" );
-  ok( @{ $data->{notes} } >= 2, "Has multiple note entries" );
+  ok( exists $data->{notes},   "Has notes section" );
+  ok( $data->{notes}->@* >= 2, "Has multiple note entries" );
 
   # Check for app log entry
-  my $has_log = grep { exists $_->{type} && $_->{type} eq 'log' } @{ $data->{notes} };
+  my $has_log = grep { exists $_->{type} && $_->{type} eq 'log' } $data->{notes}->@*;
   ok( $has_log, "Has at least one log entry" );
-  ## use critic
 };
 
 subtest "completed-task.toml - done status" => sub {
@@ -212,7 +217,6 @@ subtest "completed-task.toml - done status" => sub {
 
   ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   is( $data->{task}{status}, 'done', "Status is 'done'" );
-  ## use critic
 };
 
 subtest "deleted-task.toml - deleted status" => sub {
@@ -221,7 +225,6 @@ subtest "deleted-task.toml - deleted status" => sub {
 
   ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   is( $data->{task}{status}, 'deleted', "Status is 'deleted'" );
-  ## use critic
 };
 
 subtest "task-with-alias.toml - alias field" => sub {
@@ -231,8 +234,6 @@ subtest "task-with-alias.toml - alias field" => sub {
   ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
   ok( exists $data->{task}{alias},        "Has alias field" );
   ok( length( $data->{task}{alias} ) > 0, "Alias is non-empty" );
-  ## use critic
 };
 
 done_testing;
-## use critic

@@ -24,6 +24,10 @@ Track milestone progress. All milestone details, open questions, and decisions l
 - [ ] Show/Reminder Fields & Forgiving Recovery
 - [ ] Additional UIs (TUI/Web/Android) and packaging (Docker, PAR::Packer)
 
+## Perlcritic Follow-ups
+
+- [ ] Refactor `t/02-examples.t` to lower main complexity and remove the `Modules::ProhibitExcessMainComplexity` suppression once the helper structure is in place.
+
 ## Commitizen Configuration Follow-ups
 
 - [ ] Decide on changelog handling and add `changelog_file` if/when `cz bump` is used (e.g., `CHANGELOG.md`).

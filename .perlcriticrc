@@ -1,5 +1,5 @@
 # Globals (lenient)
-severity = 4
+severity = 3
 # force = 0
 # only = 0
 allow-unsafe = 0
@@ -980,6 +980,7 @@ exclude_functions                    = sleep print
 # add_themes                         =
 # severity                           = 3
 # maximum_violations_per_document    = no_limit
+max_mccabe = 30
 
 # The maximum complexity score allowed.
 # Minimum value 1. No maximum.

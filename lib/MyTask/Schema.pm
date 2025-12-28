@@ -3,10 +3,13 @@ package MyTask::Schema;
 use strict;
 use warnings;
 use Exporter 'import';
-use Carp       qw(croak);
-use Path::Tiny qw(path);
+use Carp             qw(croak);
+use Path::Tiny       qw(path);
+use Params::Validate qw(validate_pos HASHREF);
 use JSON::Schema::Modern;
 use JSON::MaybeXS qw(decode_json);
+
+## no critic (CodeLayout::TabIndentSpaceAlign)
 
 our @EXPORT_OK = qw(
   validate_task_file
@@ -19,6 +22,8 @@ my $schema_data;
 
 # Load JSON Schema from file (source of truth)
 sub _load_schema {
+  my @args = @_;
+  validate_pos(@args);
   return ( $validator, $schema_data ) if $validator;
 
   my $schema_file = path(__FILE__)->parent->parent->parent->child('docs')->child('schema')->child('task-file-schema.json');
@@ -33,48 +38,49 @@ sub _load_schema {
   $schema_data = decode_json( $schema_file->slurp );
 
   return ( $validator, $schema_data );
-}
+} ## end sub _load_schema
 
 # Get the schema as a Perl data structure
 # Reads from the JSON Schema file (source of truth)
 sub get_task_schema {
-  my ( $v, $schema ) = _load_schema();
+  my @args = @_;
+  validate_pos(@args);
+  my ( undef, $schema ) = _load_schema();
   return $schema;
 }
 
 # Main validation function
 # Uses JSON::Schema::Modern for validation against the JSON Schema file
 sub validate_task_file {
-  my ($data) = @_;
-
-  return ( 0, "Data must be a hash reference" ) unless ref($data) eq 'HASH';
+  my @args = @_;
+  validate_pos( @args, { 'type' => HASHREF } );
+  my ($task_data) = @args;
 
   my ( $v, $schema ) = _load_schema();
 
   # Validate against JSON Schema
-  my $result = $v->evaluate( $data, $schema );
+  my $result = $v->evaluate( $task_data, $schema );
 
   unless ( $result->valid ) {
 
     # Format error messages
     # JSON::Schema::Modern returns error objects with ->error and ->instance_location methods
-    my @errors    = $result->errors;
-    my $error_msg = join(
-      '; ',
-      map {
-        my $msg  = eval { $_->error }             || '';
-        my $path = eval { $_->instance_location } || '';
-        $path ? "$path: $msg" : ( $msg || 'validation error' );
-      } @errors
-    );
+    my @errors = $result->errors;
+    my @messages;
+    for my $err (@errors) {
+      my $msg  = eval { $err->error }             || '';
+      my $path = eval { $err->instance_location } || '';
+      push @messages, $path ? "$path: $msg" : ( $msg || 'validation error' );
+    }
+    my $error_msg = join '; ', @messages;
     return ( 0, $error_msg );
   }
 
   # Additional cross-field validations (not expressible in JSON Schema)
-  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
-  if ( exists $data->{meta}{created} && exists $data->{meta}{modified} ) {
-    my $created  = $data->{meta}{created};
-    my $modified = $data->{meta}{modified};
+  ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData CodeLayout::TabIndentSpaceAlign)
+  if ( exists $task_data->{'meta'}{'created'} && exists $task_data->{'meta'}{'modified'} ) {
+    my $created  = $task_data->{'meta'}{'created'};
+    my $modified = $task_data->{'meta'}{'modified'};
     if ( $modified lt $created ) {
       return ( 0, "modified timestamp must be >= created timestamp" );
     }

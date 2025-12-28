@@ -10,6 +10,13 @@
 - [x] Raise profile-strictness from `stern` to `fatal`, fix any remaining config issues. (Applied `fatal`; no config issues reported.)
 - [x] Raise severity 5 → 4; fix new violations.
 - [ ] Raise severity 4 → 3; fix new violations.
+  - [x] Decide handling for logicLAB::RequireParamsValidate / Subroutines::RequireArgUnpacking (standardize Params::Validate usage vs suppress).
+  - [x] Decide handling for Subroutines::ProhibitCallsToUnexportedSubs (suppress in tests only).
+  - [x] Resolve CodeLayout::TabIndentSpaceAlign (retidy or targeted suppression) in Schema/tests.
+  - [x] Decide on HashBarewords policy in tests (quote keys vs suppress in test files).
+  - [x] Address Modules::ProhibitExcessMainComplexity in t/02-examples.t (refactor vs suppress with rationale).
+  - [x] Apply /x or suppress for long regexes in tests where appropriate.
+  - [x] Decide on postderef enforcement (migrate to ->@* / ->%* or suppress in tests).
 - [ ] Evaluate feasibility of severity 2; list blockers if not practical.
 - [ ] Evaluate feasibility of severity 1; list blockers if not practical.
 - [ ] Add a dedicated perlcritic CI job (non-modifying) to enforce the stricter profile.
