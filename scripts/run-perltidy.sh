@@ -16,12 +16,18 @@ if [[ "${1:-}" == "--check" ]]; then
   shift
 fi
 
+EXIT_CODE=0
+
 if [[ "$MODE" == "check" ]]; then
   for f in "$@"; do
     perltidy --standard-output "$f" >/dev/null
+    [[ $? -ne 0 ]] && EXIT_CODE=1
   done
 else
   for f in "$@"; do
     perltidy --nostandard-output --backup-and-modify-in-place --standard-error-output --backup-file-extension=/ "$f"
+    [[ $? -ne 0 ]] && EXIT_CODE=1
   done
 fi
+
+exit $EXIT_CODE
