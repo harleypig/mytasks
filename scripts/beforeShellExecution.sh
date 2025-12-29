@@ -16,27 +16,24 @@ deny() {
 }
 
 run_with_retry() {
-  local description="$1"
-  shift
   local attempt=1
   local max_attempts=2
+
   while (( attempt <= max_attempts )); do
     if "$@"; then
       return 0
     fi
     (( attempt++ ))
   done
-  printf '[cursor hook] %s failed after %d attempts\n' "$description" "$max_attempts" >&2
-  return 1
+
+  deny "pre-commit (fix config) failed after two attempts. Please review the pre-commit output, address the issues, and retry git commit."
 }
 
 precommit() {
   local fix_cmd=(pre-commit run --all-files --config .pre-commit-config-fix.yaml)
   local check_cmd=(pre-commit run --all-files --config .pre-commit-config.yaml)
 
-  if ! run_with_retry "pre-commit fix" "${fix_cmd[@]}"; then
-    deny "pre-commit (fix config) failed after two attempts. Please review the pre-commit output, address the issues, and retry git commit."
-  fi
+  run_with_retry "${fix_cmd[@]}"
 
   if ! "${check_cmd[@]}"; then
     deny "pre-commit (default config) failed. Please review the pre-commit output, address the issues, and retry git commit."
@@ -54,4 +51,5 @@ case "$func" in
   precommit) precommit ;;
 esac
 
+# We want to allow the command to execute if no function is matched
 allow
