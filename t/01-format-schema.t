@@ -92,7 +92,7 @@ subtest "Missing required fields" => sub {
     ok( !$valid, "$case should fail validation" );
     like(
       $error,
-      qr/required | missing/imsx,
+      qr/required|missing/imsx,
       "$case error mentions missing field",
     );
   }
