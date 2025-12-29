@@ -26,7 +26,8 @@ run_with_retry() {
     fi
     (( attempt++ ))
   done
-  deny "(${description}) failed after ${max_attempts} attempts."
+  printf '[cursor hook] %s failed after %d attempts\n' "$description" "$max_attempts" >&2
+  return 1
 }
 
 precommit() {
