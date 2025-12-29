@@ -40,3 +40,7 @@ Track milestone progress. All milestone details, open questions, and decisions l
 ## Perl Tools
 
 Use [tidyall](https://metacpan.org/dist/Code-TidyAll/view/bin/tidyall) for the various linters, validators and such.
+
+## GitHub Actions Follow-ups
+
+- [ ] Revisit workflow structure: keep reusable job workflows (pre-commit and future checks) and ensure the self-review gate depends on all required jobs; consider caching and runner image strategy to reduce install time.

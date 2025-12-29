@@ -1,3 +1,5 @@
+[![MyTasks](https://github.com/harleypig/mytask/actions/workflows/self-review-gate.yml/badge.svg)](https://github.com/harleypig/mytask/actions/workflows/self-review-gate.yml)
+
 # Overview: File-Based, Multi-Host Task Manager
 
 ## Context
