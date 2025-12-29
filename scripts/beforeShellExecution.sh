@@ -45,7 +45,7 @@ precommit() {
 cmd=$(jq -r '.command' <<< "$PAYLOAD")
 
 func=
-[[ "$cmd" =~ ^git\ commit\ .* ]] && func="precommit"
+[[ "$cmd" =~ ^git\ commit([[:space:]]|$) ]] && func="precommit"
 
 case "$func" in
   precommit) precommit ;;

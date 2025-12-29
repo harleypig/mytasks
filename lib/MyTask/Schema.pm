@@ -92,7 +92,7 @@ sub validate_task_file {
   }
   ## use critic
 
-  return ( 1, undef );
+  return ( 1, q{} );
 } ## end sub validate_task_file
 
 1;
