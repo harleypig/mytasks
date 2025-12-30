@@ -4,7 +4,9 @@ use warnings;
 use Test::More;
 use Path::Tiny qw(path);
 
-## no critic (Modules::ProhibitExcessMainComplexity CodeLayout::TabIndentSpaceAlign CodeLayout::ProhibitHashBarewords CodeLayout::RequireTrailingCommaAtNewline Bangs::ProhibitCommentedOutCode Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::ProhibitCallsToUnexportedSubs Bangs::ProhibitVagueNames)
+## no critic (Tics::ProhibitLongLines)
+
+## no critic (Modules::ProhibitExcessMainComplexity CodeLayout::TabIndentSpaceAlign CodeLayout::ProhibitHashBarewords CodeLayout::RequireTrailingCommaAtNewline Bangs::ProhibitCommentedOutCode Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::ProhibitCallsToUnexportedSubs Bangs::ProhibitVagueNames Tics::ProhibitLongLines)
 # Test file: targeted suppressions kept minimal for reliability; see WORKFLOW.md for test suppression guidance.
 
 # Check if TOML::Tiny is available
@@ -29,9 +31,6 @@ my @example_files = qw(
   task-with-alias.toml
 );
 
-# Helper to run per-file checks (kept to control main complexity;
-# Modules::ProhibitExcessMainComplexity suppressed at file level)
-## no critic (logicLAB::RequireParamsValidate Subroutines::RequireFinalReturn)
 sub run_example_checks {
   my ( $filename, $file ) = @_;
 

@@ -6,6 +6,8 @@ requires 'TOML::Tiny', '0';
 requires 'JSON::Schema::Modern', '0';
 requires 'JSON::MaybeXS', '1.004000';
 requires 'Path::Tiny', '0';
+requires 'Params::ValidationCompiler', '0';
+requires 'Type::Tiny', '0';
 
 # Test dependencies
 on test => sub {

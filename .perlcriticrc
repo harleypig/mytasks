@@ -5,7 +5,7 @@ severity = 2
 allow-unsafe = 0
 profile-strictness = fatal
 # Relaxed exclusions
-exclude = Tics::ProhibitLongLines CodeLayout::ProhibitSpaceIndentation
+exclude =
 # color = 0
 # pager =
 top = 10
@@ -299,7 +299,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 # Complain even if there are non-word characters in the values.
 # strict = 0
 
-[CodeLayout::ProhibitSpaceIndentation]
+[-CodeLayout::ProhibitSpaceIndentation]
 # set_themes                         = cosmetic
 # add_themes                         =
 # severity                           = 2
@@ -2133,18 +2133,14 @@ file_lexical_variables              = :all_upper
 # No description available.
 # exempt_programs =
 
-# simple policy for enforcing use of Params::Validate
-[logicLAB::RequireParamsValidate]
-# set_themes                         = logiclab
-# add_themes                         =
-# severity                           = 3
-# maximum_violations_per_document    = no_limit
-
 # simple policy for keeping your shebang line uniform
 [-logicLAB::RequireSheBang]
 # set_themes                         = logiclab
 # add_themes                         =
 # severity                           = 3
+
+# simple policy for enforcing use of Params::Validate (disabled)
+[-logicLAB::RequireParamsValidate]
 # maximum_violations_per_document    = no_limit
 
 # No description available.

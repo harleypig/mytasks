@@ -5,6 +5,8 @@ use Test::More;
 use Path::Tiny qw(path);
 use TOML::Tiny;
 
+## no critic (Tics::ProhibitLongLines)
+
 ## no critic (Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::ProhibitCallsToUnexportedSubs Reneeb::ProhibitBlockEval CodeLayout::TabIndentSpaceAlign CodeLayout::ProhibitHashBarewords Bangs::ProhibitVagueNames)
 
 BEGIN {

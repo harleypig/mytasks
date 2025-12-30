@@ -3,13 +3,14 @@ package MyTask::Schema;
 use strict;
 use warnings;
 use Exporter 'import';
-use Carp             qw(croak);
-use Path::Tiny       qw(path);
-use Params::Validate qw(validate_pos HASHREF);
+use Carp                       qw(croak);
+use Path::Tiny                 qw(path);
+use Params::ValidationCompiler qw(validation_for);
+use Types::Standard            qw(HashRef);
 use JSON::Schema::Modern;
 use JSON::MaybeXS qw(decode_json);
 
-## no critic (CodeLayout::TabIndentSpaceAlign)
+## no critic (CodeLayout::TabIndentSpaceAlign Subroutines::RequireArgUnpacking ErrorHandling::RequireUseOfExceptions Tics::ProhibitLongLines)
 
 our @EXPORT_OK = qw(
   validate_task_file
@@ -20,6 +21,17 @@ our @EXPORT_OK = qw(
 my $validator;
 my $schema_data;
 
+my $validate_task_data = validation_for(
+  'params' => [
+    { 'type' => HashRef },
+  ],
+);
+
+sub _assert_no_args {
+  croak 'No arguments expected' if @_;
+  return;
+}
+
 sub _schema_path {
   my $root = path(__FILE__)->parent->parent->parent;
   return $root->child('docs/schema/task-file-schema.json');
@@ -27,29 +39,25 @@ sub _schema_path {
 
 # Load JSON Schema from file (source of truth)
 sub _load_schema {
-  my @args = @_;
-  validate_pos(@args);
+  _assert_no_args(@_);
   return ( $validator, $schema_data ) if $validator;
 
   my $schema_file = _schema_path();
 
   if ( !$schema_file->exists ) {
-    ## no critic (ErrorHandling::RequireUseOfExceptions)
     croak "Schema file not found: $schema_file";
-    ## use critic
   }
 
   $validator   = JSON::Schema::Modern->new;
   $schema_data = decode_json( $schema_file->slurp );
 
   return ( $validator, $schema_data );
-} ## end sub _load_schema
+}
 
 # Get the schema as a Perl data structure
 # Reads from the JSON Schema file (source of truth)
 sub get_task_schema {
-  my @args = @_;
-  validate_pos(@args);
+  _assert_no_args(@_);
   my ( undef, $schema ) = _load_schema();
   return $schema;
 }
@@ -58,8 +66,7 @@ sub get_task_schema {
 # Uses JSON::Schema::Modern for validation against the JSON Schema file
 sub validate_task_file {
   my @args = @_;
-  validate_pos( @args, { 'type' => HASHREF } );
-  my ($task_data) = @args;
+  my ($task_data) = $validate_task_data->(@args);
 
   my ( $v, $schema ) = _load_schema();
 
